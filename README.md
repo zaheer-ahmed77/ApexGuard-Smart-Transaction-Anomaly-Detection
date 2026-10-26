@@ -226,14 +226,7 @@ ApexGuard-Smart-Transaction-Anomaly-Detection/
 └── vercel.json                   # Vercel edge reverse-proxy configuration
 ```
 
----
 
-## 📖 Presentation & Examination Documents
-
-For academic evaluation and defense preparation, refer to the following comprehensive documents:
-* **[PROJECT_DEFENSE_MASTER_DOSSIER.md](PROJECT_DEFENSE_MASTER_DOSSIER.md)**: 25+ in-depth technical questions and answers covering ML mathematical proofs, class imbalance handling, feature importance, and architecture.
-* **[APEXGUARD_PRESENTATION_SLIDES.md](APEXGUARD_PRESENTATION_SLIDES.md)**: The exact 16-slide presentation deck designed for PowerPoint.
-* **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**: Deployment steps for Render, Vercel, and UptimeRobot keep-alive monitoring.
 
 ---
 
