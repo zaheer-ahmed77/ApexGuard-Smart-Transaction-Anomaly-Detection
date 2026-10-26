@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexGuard — Intelligent Transaction Anomaly & AML Platform</title>
+    <meta name="description" content="Next-generation financial transaction anomaly detection and AML compliance platform powered by XGBoost, Isolation Forest, and FATF regulatory monitoring.">
+    <link rel="icon" type="image/svg+xml" href="/static/assets/logo.svg">
+    
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- Top Navbar -->
+        <header class="top-navbar">
+            <div class="brand-section">
+                <img src="/static/assets/logo.svg" alt="ApexGuard Logo" class="brand-logo-img">
+                <div class="brand-text-block">
+                    <div class="brand-name">
+                        ApexGuard
+                        <span class="brand-pill">AML v3.0</span>
+                    </div>
+                    <span class="brand-subtitle">Transaction Anomaly & Risk Intelligence</span>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs (Pills) -->
+            <nav class="nav-pills" id="main-nav">
+                <button class="nav-item active" data-view="dashboard-view" id="nav-btn-dashboard">
+                    <i data-lucide="layout-dashboard"></i> Overview
+                </button>
+                <button class="nav-item" data-view="scanner-view" id="nav-btn-scanner">
+                    <i data-lucide="zap"></i> Live Scanner
+                </button>
+                <button class="nav-item" data-view="batch-view" id="nav-btn-batch">
+                    <i data-lucide="file-spreadsheet"></i> Batch Auditor
+                </button>
+                <button class="nav-item" data-view="investigation-view" id="nav-btn-investigation">
+                    <i data-lucide="shield-alert"></i> Investigation Hub
+                </button>
+                <button class="nav-item" data-view="compliance-view" id="nav-btn-compliance">
+                    <i data-lucide="shield-check"></i> FATF Compliance Hub
+                </button>
+            </nav>
+
+            <!-- Right Controls: Live status, Landing Link, & Bitmoji user profile -->
+            <div class="header-actions">
+                <a href="/" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem; border-radius: var(--radius-full);">
+                    <i data-lucide="home" style="width: 13px; height: 13px;"></i> Home
+                </a>
+
+                <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    <span>XGBoost Active</span>
+                </div>
+                
+                <div class="user-profile-widget" id="auth-btn" title="Click to Switch User">
+                    <img src="/static/assets/admin_avatar.svg" alt="User Bitmoji" class="user-bitmoji" id="nav-avatar-img">
+                    <span class="user-meta-name" id="nav-username">Admin</span>
+                    <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--ink-muted);"></i>
+                </div>
+
+                <a href="/login" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.78rem; border-radius: var(--radius-full);" title="Sign In with Another Account">
+                    <i data-lucide="log-in" style="width: 13px; height: 13px;"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="main-container">
+
+            <!-- ==========================================
+                 VIEW 1: OVERVIEW DASHBOARD
+                 ========================================== -->
+            <section class="view-section active" id="dashboard-view">
+                <div class="section-hero">
+                    <div>
+                        <h2 class="section-title">Surveillance & Risk Overview</h2>
+                        <p class="section-subtitle">Real-time fraud surveillance ledger, FATF compliance metrics, and anomaly distribution</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-outline" id="btn-export-summary">
+                            <i data-lucide="download"></i> Export Summary
+                        </button>
+                        <button class="btn btn-black" id="btn-quick-scan-top">
+                            <i data-lucide="play"></i> Run Transaction Scan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Cards Row -->
+                <div class="kpi-row">
+                    <div class="kpi-box">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Transactions Scanned</span>
+                            <div class="kpi-icon-wrap"><i data-lucide="activity"></i></div>
+                        </div>
+                        <div class="kpi-val" id="kpi-total-tx">40,060</div>
+                        <div class="kpi-footer">
+                            <i data-lucide="check-circle-2" style="width: 14px; height: 14px; color: #16a34a;"></i>
+                            <span>100% telemetry coverage</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Anomalies Intercepted</span>
+                            <div class="kpi-icon-wrap" style="color: #dc2626;"><i data-lucide="alert-octagon"></i></div>
+                        </div>
+                        <div class="kpi-val" id="kpi-fraud-tx">615</div>
+                        <div class="kpi-footer">
+                            <span class="badge badge-critical" id="kpi-fraud-rate">1.54% Flagged</span>
+                            <span>high-risk entities</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Capital Protected</span>
+                            <div class="kpi-icon-wrap" style="color: #16a34a;"><i data-lucide="shield-check"></i></div>
+                        </div>
+                        <div class="kpi-val" id="kpi-prevented-usd">$18.4M</div>
+                        <div class="kpi-footer">
+                            <span class="badge badge-normal">FATF Compliant</span>
+                            <span>loss prevention</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Model Accuracy</span>
+                            <div class="kpi-icon-wrap"><i data-lucide="crosshair"></i></div>
+                        </div>
+                        <div class="kpi-val" id="kpi-accuracy">99.4%</div>
+                        <div class="kpi-footer">
+                            <span style="font-weight: 700; color: #16a34a;">ROC-AUC: 1.00</span>
+                            <span>Dual ML + Rule Engine</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Layout -->
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i data-lucide="trending-up"></i>
+                                Transaction Volume vs Anomaly Velocity
+                            </div>
+                            <span class="card-action-text">Hourly Monitoring Sequence</span>
+                        </div>
+                        <div class="chart-frame">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i data-lucide="pie-chart"></i>
+                                Risk Classification Tiers
+                            </div>
+                        </div>
+                        <div class="chart-frame">
+                            <canvas id="riskDonutChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-equal-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i data-lucide="scale"></i>
+                                AML Regulatory Rule Violations
+                            </div>
+                            <span class="card-action-text">FATF & FinCEN Triggers</span>
+                        </div>
+                        <div class="chart-frame">
+                            <canvas id="rulesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i data-lucide="arrow-left-right"></i>
+                                Volume Distribution by Channel
+                            </div>
+                        </div>
+                        <div class="chart-frame">
+                            <canvas id="typeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ==========================================
+                 VIEW 2: LIVE TRANSACTION SCANNER
+                 ========================================== -->
+            <section class="view-section" id="scanner-view">
+                <div class="section-hero">
+                    <div>
+                        <h2 class="section-title">Live Transaction AI Inspector</h2>
+                        <p class="section-subtitle">Real-time inference using the ensemble XGBoost classifier, Isolation Forest, and FATF rule matrices</p>
+                    </div>
+                </div>
+
+                <!-- Realistic Presets -->
+                <div class="preset-chip-group">
+                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase;">Simulate Scenarios:</span>
+                    <button class="preset-chip" id="preset-normal">
+                        <i data-lucide="coffee" style="width: 14px; height: 14px; color: #16a34a;"></i> Everyday Merchant ($45.00)
+                    </button>
+                    <button class="preset-chip" id="preset-drain">
+                        <i data-lucide="alert-triangle" style="width: 14px; height: 14px; color: #dc2626;"></i> Account Balance Drain ($120,000)
+                    </button>
+                    <button class="preset-chip" id="preset-smurfing">
+                        <i data-lucide="split" style="width: 14px; height: 14px; color: #d97706;"></i> Structuring / Smurfing ($9,850)
+                    </button>
+                    <button class="preset-chip" id="preset-large">
+                        <i data-lucide="landmark" style="width: 14px; height: 14px; color: #2563eb;"></i> High-Value Corporate Wire ($450,000)
+                    </button>
+                </div>
+
+                <div class="scanner-split">
+                    <!-- Form Parameters -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i data-lucide="sliders-horizontal"></i>
+                                Transaction Payload
+                            </div>
+                            <span class="card-action-text">PaySim Standard Protocol</span>
+                        </div>
+
+                        <form id="scanner-form">
+                            <div class="form-layout" style="margin-bottom: 20px;">
+                                <div class="form-field">
+                                    <label class="field-label">Transaction Channel / Type</label>
+                                    <select class="field-select" id="inp-type" required>
+                                        <option value="TRANSFER">TRANSFER (Interbank)</option>
+                                        <option value="CASH_OUT">CASH_OUT (Atm / Branch)</option>
+                                        <option value="PAYMENT" selected>PAYMENT (Point of Sale)</option>
+                                        <option value="CASH_IN">CASH_IN (Deposit)</option>
+                                        <option value="DEBIT">DEBIT (Direct Debit)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label class="field-label">Amount ($ USD)</label>
+                                    <input type="number" step="0.01" class="field-input" id="inp-amount" value="45.00" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <label class="field-label">Origin Account (Sender)</label>
+                                    <input type="text" class="field-input" id="inp-orig" value="C12847582" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <label class="field-label">Beneficiary Account (Receiver)</label>
+                                    <input type="text" class="field-input" id="inp-dest" value="M8492019" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <label class="field-label">Sender Pre-Transaction Balance ($)</label>
+                                    <input type="number" step="0.01" class="field-input" id="inp-oldbalance-org" value="3500.00" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <label class="field-label">Sender Post-Transaction Balance ($)</label>
+                                    <input type="number" step="0.01" class="field-input" id="inp-newbalance-orig" value="3455.00" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <label class="field-label">Beneficiary Pre-Transaction Balance ($)</label>
+                                    <input type="number" step="0.01" class="field-input" id="inp-oldbalance-dest" value="12000.00" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <label class="field-label">Beneficiary Post-Transaction Balance ($)</label>
+                                    <input type="number" step="0.01" class="field-input" id="inp-newbalance-dest" value="12045.00" required>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-black" style="width: 100%; padding: 12px;" id="btn-run-scanner">
+                                <i data-lucide="sparkles"></i> Evaluate Transaction Risk
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Evaluation Verdict Card -->
+                    <div class="inspection-panel">
+                        <span style="font-size: 0.74rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.5px;">
+                            AI Anomaly Verdict
+                        </span>
+
+                        <div class="gauge-holder">
+                            <canvas id="riskGaugeChart"></canvas>
+                        </div>
+
+                        <div class="badge badge-normal" id="res-badge" style="font-size: 0.85rem; padding: 6px 16px;">
+                            NORMAL TRANSACTION
+                        </div>
+
+                        <div class="metric-trio">
+                            <div class="trio-item">
+                                <span class="trio-val" id="res-composite-score">0.02</span>
+                                <span class="trio-lbl">Risk Index</span>
+                            </div>
+                            <div class="trio-item">
+                                <span class="trio-val" id="res-ml-score">0.01</span>
+                                <span class="trio-lbl">XGBoost Prob</span>
+                            </div>
+                            <div class="trio-item">
+                                <span class="trio-val" id="res-rule-score">0.00</span>
+                                <span class="trio-lbl">Rule Weight</span>
+                            </div>
+                        </div>
+
+                        <div class="violation-tag-group" id="res-rule-chips">
+                            <span class="badge badge-normal" style="font-size: 0.76rem;">All AML Rule Checks Clear</span>
+                        </div>
+
+                        <div class="narrative-box" id="res-explanation">
+                            Transaction metrics conform to verified customer financial profile and baseline channel behavior.
+                        </div>
+
+                        <div style="font-size: 0.74rem; color: var(--ink-muted); display: flex; align-items: center; gap: 6px;" id="res-proc-time">
+                            <i data-lucide="clock" style="width: 12px; height: 12px;"></i> Latency: 3.8ms | Stored in SQLite Ledger
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ==========================================
+                 VIEW 3: BATCH CSV AUDITOR
+                 ========================================== -->
+            <section class="view-section" id="batch-view">
+                <div class="section-hero">
+                    <div>
+                        <h2 class="section-title">Batch Transaction CSV Auditor</h2>
+                        <p class="section-subtitle">Process high-volume files, perform automated SAR anomaly screening, and export compliance reports</p>
+                    </div>
+                    <button class="btn btn-outline" id="btn-use-sample-csv">
+                        <i data-lucide="file-check-2"></i> Audit Benchmark Dataset
+                    </button>
+                </div>
+
+                <div class="dropzone-box" id="dropzone">
+                    <input type="file" id="batch-file-input" accept=".csv" style="display: none;">
+                    <i data-lucide="upload-cloud" class="dropzone-icon"></i>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;">
+                        Drop your Transaction CSV here, or <span style="text-decoration: underline; color: #09090b;">Browse</span>
+                    </h3>
+                    <p style="font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 16px;">
+                        Supports standard bank ledgers & PaySim schemas (up to 5,000 transactions per run)
+                    </p>
+                    <button class="btn btn-outline" id="btn-browse-trigger">
+                        <i data-lucide="folder-search"></i> Select Local File
+                    </button>
+                </div>
+
+                <!-- Progress Bar -->
+                <div id="batch-progress-box" style="display: none; margin-bottom: 24px;" class="card">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 8px;">
+                        <span id="batch-progress-text" style="font-weight: 600;">Processing transactions through XGBoost and AML Rules...</span>
+                        <span id="batch-progress-percent" style="font-weight: 700;">0%</span>
+                    </div>
+                    <div style="height: 6px; background: #e4e4e7; border-radius: 4px; overflow: hidden;">
+                        <div id="batch-progress-fill" style="width: 0%; height: 100%; background: #09090b; transition: width 0.25s;"></div>
+                    </div>
+                </div>
+
+                <!-- Batch Results Container -->
+                <div id="batch-results-wrapper" style="display: none;">
+                    <div class="kpi-row">
+                        <div class="kpi-box">
+                            <div class="kpi-label">Batch Processed</div>
+                            <div class="kpi-val" id="batch-total">0</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Flagged Anomalies</div>
+                            <div class="kpi-val" style="color: #dc2626;" id="batch-anomalies">0</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Anomaly Proportion</div>
+                            <div class="kpi-val" id="batch-rate">0%</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Exposure Intercepted</div>
+                            <div class="kpi-val" style="color: #16a34a;" id="batch-prevented">$0</div>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <div style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light);">
+                            <h3 style="font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                                <i data-lucide="list-filter"></i> High-Risk Anomalies Ledger
+                            </h3>
+                            <button class="btn btn-outline" id="btn-export-batch-csv">
+                                <i data-lucide="download"></i> Export Audit Report (CSV)
+                            </button>
+                        </div>
+                        <table class="clean-table">
+                            <thead>
+                                <tr>
+                                    <th>Txn ID</th>
+                                    <th>Channel</th>
+                                    <th>Amount</th>
+                                    <th>Sender</th>
+                                    <th>Beneficiary</th>
+                                    <th>Risk Tier</th>
+                                    <th>Score</th>
+                                    <th>Violations</th>
+                                </tr>
+                            </thead>
+                            <tbody id="batch-preview-tbody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ==========================================
+                 VIEW 4: INVESTIGATION HUB
+                 ========================================== -->
+            <section class="view-section" id="investigation-view">
+                <div class="section-hero">
+                    <div>
+                        <h2 class="section-title">Case Investigation Hub</h2>
+                        <p class="section-subtitle">Searchable transaction repository, compliance auditing, and SAR case resolutions</p>
+                    </div>
+                    <button class="btn btn-outline" id="btn-refresh-table">
+                        <i data-lucide="refresh-cw"></i> Refresh Ledger
+                    </button>
+                </div>
+
+                <div class="filter-toolbar">
+                    <div class="search-field-wrap">
+                        <i data-lucide="search" class="search-icon-pos"></i>
+                        <input type="text" id="tbl-search-input" placeholder="Search by Txn ID, Sender, Beneficiary, or Channel (e.g. C1002)...">
+                    </div>
+
+                    <div class="preset-chip-group" id="risk-filter-pills" style="margin-bottom: 0;">
+                        <button class="preset-chip" style="background: #09090b; color: #ffffff;" data-filter="ALL">All Transactions</button>
+                        <button class="preset-chip" data-filter="CRITICAL">Critical Fraud</button>
+                        <button class="preset-chip" data-filter="MEDIUM">Medium Warning</button>
+                        <button class="preset-chip" data-filter="NORMAL">Normal</button>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="clean-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Channel</th>
+                                <th>Amount</th>
+                                <th>Origin Account</th>
+                                <th>Beneficiary Account</th>
+                                <th>Risk Score</th>
+                                <th>Classification</th>
+                                <th>Workflow Status</th>
+                                <th>Scored At</th>
+                            </tr>
+                        </thead>
+                        <tbody id="investigation-tbody">
+                            <!-- Populated dynamically via /api/transactions -->
+                        </tbody>
+                    </table>
+
+                    <div class="table-pagination">
+                        <span id="pagination-info">Showing records</span>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem;" id="btn-page-prev" disabled>Previous</button>
+                            <button class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem;" id="btn-page-next">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ==========================================
+                 VIEW 5: FATF REGULATORY COMPLIANCE HUB
+                 ========================================== -->
+            <section class="view-section" id="compliance-view">
+                <div class="section-hero">
+                    <div>
+                        <h2 class="section-title">FATF Regulatory Compliance Hub</h2>
+                        <p class="section-subtitle">Institutional AML rule matrix, anti-structuring policies, automated SAR drafting, and ML model diagnostics</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-black" id="btn-open-sar-modal">
+                            <i data-lucide="file-text"></i> Generate Official SAR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FATF 40 Recommendations Rule Matrix -->
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i data-lucide="scale"></i>
+                            FATF & FinCEN Regulatory Rule Matrix
+                        </div>
+                        <span class="badge" style="background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; font-size: 0.72rem; font-weight: 700;">
+                            All 4 Sentinel Rules Active
+                        </span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                        <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 18px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.72rem; font-weight: 800; background: #09090b; color: #ffffff; padding: 3px 7px; border-radius: 4px;">R.16</span>
+                                    <strong style="font-size: 0.9rem;">Travel Rule</strong>
+                                </div>
+                                <span class="badge badge-normal" style="font-size: 0.68rem;">Enforced</span>
+                            </div>
+                            <p style="font-size: 0.78rem; color: var(--ink-secondary); line-height: 1.45; margin-bottom: 10px;">
+                                Validates originator & beneficiary identity payloads on cross-border wire transfers. Flags unverified counterparties.
+                            </p>
+                            <div style="font-size: 0.72rem; color: var(--ink-muted); font-weight: 600;">Threshold: &gt; $1,000 Cross-Border</div>
+                        </div>
+
+                        <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 18px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.72rem; font-weight: 800; background: #09090b; color: #ffffff; padding: 3px 7px; border-radius: 4px;">R.20</span>
+                                    <strong style="font-size: 0.9rem;">Suspicious Reporting</strong>
+                                </div>
+                                <span class="badge badge-normal" style="font-size: 0.68rem;">Enforced</span>
+                            </div>
+                            <p style="font-size: 0.78rem; color: var(--ink-secondary); line-height: 1.45; margin-bottom: 10px;">
+                                Automatically drafts FinCEN/FATF Suspicious Activity Reports (SAR) upon composite anomaly score exceeding trigger.
+                            </p>
+                            <div style="font-size: 0.72rem; color: var(--ink-muted); font-weight: 600;">Trigger: Anomaly Score ≥ 0.70</div>
+                        </div>
+
+                        <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 18px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.72rem; font-weight: 800; background: #09090b; color: #ffffff; padding: 3px 7px; border-radius: 4px;">BSA</span>
+                                    <strong style="font-size: 0.9rem;">Anti-Structuring / Smurfing</strong>
+                                </div>
+                                <span class="badge badge-critical" style="font-size: 0.68rem;">Critical</span>
+                            </div>
+                            <p style="font-size: 0.78rem; color: var(--ink-secondary); line-height: 1.45; margin-bottom: 10px;">
+                                Flags transactions deliberately structured between $9,000 and $9,999 to evade Currency Transaction Report (CTR) filing.
+                            </p>
+                            <div style="font-size: 0.72rem; color: var(--ink-muted); font-weight: 600;">Band: $9,000 – $9,999.99</div>
+                        </div>
+
+                        <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 18px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.72rem; font-weight: 800; background: #09090b; color: #ffffff; padding: 3px 7px; border-radius: 4px;">R.10</span>
+                                    <strong style="font-size: 0.9rem;">Rapid Account Drainage</strong>
+                                </div>
+                                <span class="badge badge-critical" style="font-size: 0.68rem;">Critical</span>
+                            </div>
+                            <p style="font-size: 0.78rem; color: var(--ink-secondary); line-height: 1.45; margin-bottom: 10px;">
+                                Flags origin accounts where 100% of the funds are drained immediately via CASH_OUT or TRANSFER to $0.00.
+                            </p>
+                            <div style="font-size: 0.72rem; color: var(--ink-muted); font-weight: 600;">Threshold: 100% Depletion to $0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compliance Rule Policy Controls -->
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i data-lucide="sliders"></i>
+                            Regulatory Thresholds & Enforcement Policies
+                        </div>
+                        <span class="card-action-text">Active Sentinel Node: prod-node-01</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+                        <div>
+                            <label class="field-label" style="font-size: 0.76rem;">Structuring Detection Floor ($)</label>
+                            <input type="number" class="field-input" value="9000" id="cfg-struct-min" style="font-family: monospace;">
+                        </div>
+                        <div>
+                            <label class="field-label" style="font-size: 0.76rem;">CTR Mandatory Reporting Limit ($)</label>
+                            <input type="number" class="field-input" value="10000" id="cfg-struct-max" style="font-family: monospace;">
+                        </div>
+                        <div>
+                            <label class="field-label" style="font-size: 0.76rem;">Auto-SAR Score Trigger</label>
+                            <input type="text" class="field-input" value="0.70 (High Confidence)" readonly style="font-family: monospace; background: #f4f4f5;">
+                        </div>
+                        <div>
+                            <label class="field-label" style="font-size: 0.76rem;">Policy Action</label>
+                            <select class="field-select" id="cfg-policy-action">
+                                <option value="HOLD">Automated Payment Hold & Audit</option>
+                                <option value="ALERT">Flag for Analyst Review</option>
+                                <option value="BLOCK">Immediate Hard Block</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Model Specs Trio -->
+                <div class="kpi-row">
+                    <div class="kpi-box">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Primary Classifier</span>
+                            <i data-lucide="git-fork"></i>
+                        </div>
+                        <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 6px;">XGBoost Trees v3.0</div>
+                        <p style="font-size: 0.78rem; color: var(--ink-muted); margin-bottom: 14px;">Gradient boosted decision trees trained with logloss and class imbalance compensation.</p>
+                        <div style="border-top: 1px solid var(--border-light); padding-top: 10px; font-size: 0.8rem; display: flex; justify-content: space-between;">
+                            <span>ROC-AUC: <strong>1.0000</strong></span>
+                            <span>Precision: <strong>100%</strong></span>
+                            <span>Recall: <strong>100%</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Unsupervised Outlier</span>
+                            <i data-lucide="radar"></i>
+                        </div>
+                        <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 6px;">Isolation Forest</div>
+                        <p style="font-size: 0.78rem; color: var(--ink-muted); margin-bottom: 14px;">Detects distribution deviations without labels, isolating anomalous clusters.</p>
+                        <div style="border-top: 1px solid var(--border-light); padding-top: 10px; font-size: 0.8rem; display: flex; justify-content: space-between;">
+                            <span>Contamination: <strong>1.5%</strong></span>
+                            <span>Estimators: <strong>100 Trees</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Regulatory Rules</span>
+                            <i data-lucide="gavel"></i>
+                        </div>
+                        <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 6px;">FATF AML Engine</div>
+                        <p style="font-size: 0.78rem; color: var(--ink-muted); margin-bottom: 14px;">Deterministic rules covering Smurfing, Rapid Balance Depletion, and Threshold breaches.</p>
+                        <div style="border-top: 1px solid var(--border-light); padding-top: 10px; font-size: 0.8rem; display: flex; justify-content: space-between;">
+                            <span>Active Scenarios: <strong>4 Rules</strong></span>
+                            <span>Deterministic: <strong>Yes</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Importance Chart -->
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i data-lucide="bar-chart-3"></i>
+                            XAI Feature Importance Ranking (Explainable AI)
+                        </div>
+                        <span class="card-action-text">Contribution to Model Decision</span>
+                    </div>
+                    <div class="chart-frame" style="height: 300px;">
+                        <canvas id="featuresChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ==========================================
+         MODAL 1: TRANSACTION CASE INSPECTOR
+         ========================================== -->
+    <div class="modal-backdrop" id="tx-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title-text" id="modal-tx-id">Case Audit: TXN-100015</h3>
+                    <span style="font-size: 0.76rem; color: var(--ink-muted);" id="modal-tx-time">2026-10-26 13:00 UTC</span>
+                </div>
+                <button class="modal-close-trigger" id="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-content-body">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+                    <div style="display: flex; gap: 8px;">
+                        <span class="badge badge-critical" id="modal-risk-badge">CRITICAL FRAUD</span>
+                        <span class="badge" style="background: #f4f4f5; color: #27272a;" id="modal-status-badge">PENDING REVIEW</span>
+                    </div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: var(--ink-primary);" id="modal-amount">$95,000.00</div>
+                </div>
+
+                <!-- Account Flow Box -->
+                <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 18px;">
+                    <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: center; text-align: center;">
+                        <div>
+                            <div style="font-size: 0.72rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase;">Origin Account</div>
+                            <div style="font-weight: 800; font-size: 0.92rem; color: #09090b;" id="modal-orig-acc">C19283748</div>
+                            <div style="font-size: 0.78rem; color: var(--ink-secondary); margin-top: 3px;">Balance: <span id="modal-orig-bal">$95,000 → $0.00</span></div>
+                        </div>
+                        <div>
+                            <i data-lucide="arrow-right" style="width: 20px; height: 20px; color: var(--ink-muted);"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.72rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase;">Beneficiary Account</div>
+                            <div style="font-weight: 800; font-size: 0.92rem; color: #09090b;" id="modal-dest-acc">C91827364</div>
+                            <div style="font-size: 0.78rem; color: var(--ink-secondary); margin-top: 3px;">Balance: <span id="modal-dest-bal">$0.00 → $95,000</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 0.84rem; font-weight: 700; color: var(--ink-primary); margin-bottom: 6px;">Evaluation Explanation:</h4>
+                    <div class="narrative-box" id="modal-explanation">
+                        Origin account balance was completely emptied out immediately upon transfer/cash-out.
+                    </div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border-light); padding-top: 16px;">
+                    <h4 style="font-size: 0.82rem; font-weight: 700; color: var(--ink-secondary); margin-bottom: 10px;">Analyst Case Resolution:</h4>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-danger" style="flex: 1;" id="btn-modal-confirm-fraud">
+                            <i data-lucide="shield-x"></i> Confirm Fraud (SAR)
+                        </button>
+                        <button class="btn btn-outline" style="flex: 1;" id="btn-modal-clear-normal">
+                            <i data-lucide="shield-check"></i> Clear as Legitimate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==========================================
+         MODAL 2: ANALYST SIGN-IN / SWITCHER
+         ========================================== -->
+    <div class="modal-backdrop" id="auth-modal">
+        <div class="modal-container" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 class="modal-title-text">Compliance Officer Sign In</h3>
+                <button class="modal-close-trigger" id="auth-close-btn">&times;</button>
+            </div>
+            <div class="modal-content-body">
+                <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                    <button class="preset-chip" style="flex: 1; justify-content: center;" id="btn-fill-admin">
+                        <img src="/static/assets/admin_avatar.svg" style="width: 16px; height: 16px; border-radius: 50%;"> Admin User
+                    </button>
+                    <button class="preset-chip" style="flex: 1; justify-content: center;" id="btn-fill-analyst">
+                        <img src="/static/assets/analyst_avatar.svg" style="width: 16px; height: 16px; border-radius: 50%;"> Lead Analyst
+                    </button>
+                </div>
+
+                <form id="login-form">
+                    <div class="form-field" style="margin-bottom: 12px;">
+                        <label class="field-label">Username</label>
+                        <input type="text" class="field-input" id="auth-username" value="admin" required>
+                    </div>
+                    <div class="form-field" style="margin-bottom: 18px;">
+                        <label class="field-label">Password</label>
+                        <input type="password" class="field-input" id="auth-password" value="Admin@123" required>
+                    </div>
+                    <button type="submit" class="btn btn-black" style="width: 100%;">
+                        <i data-lucide="log-in"></i> Sign In to ApexGuard
+                    </button>
+                </form>
+            </div>
+    <!-- ==========================================
+         MODAL 3: OFFICIAL SAR REPORT DRAFT MODAL
+         ========================================== -->
+    <div class="modal-backdrop" id="sar-modal">
+        <div class="modal-container" style="max-width: 680px;">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title-text">FinCEN / FATF Form SAR-01 Preview</h3>
+                    <span style="font-size: 0.76rem; color: var(--ink-muted);">Suspicious Activity Report — Regulatory Filing Draft</span>
+                </div>
+                <button class="modal-close-trigger" id="sar-modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-content-body">
+                <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 18px; margin-bottom: 18px; font-family: monospace; font-size: 0.8rem; line-height: 1.6; color: #18181b;">
+                    <div><strong>REGULATORY AGENCY:</strong> Financial Crimes Enforcement Network (FinCEN) / FATF</div>
+                    <div><strong>FILING INSTITUTION:</strong> ApexGuard Autonomous Sentinel Rail (Node: 01)</div>
+                    <div><strong>FILING TIMESTAMP:</strong> <span id="sar-draft-time">2026-10-26 16:00:00 UTC</span></div>
+                    <div><strong>SUBJECT ENTITY:</strong> Origin Account C19283748 &rarr; Beneficiary M91827364</div>
+                    <div><strong>TRANSACTION AMOUNT:</strong> $145,000.00 USD (CASH_OUT)</div>
+                    <div><strong>COMPOSITE ANOMALY SCORE:</strong> 0.992 (CRITICAL SEVERITY)</div>
+                    <div style="margin-top: 10px; border-top: 1px dashed #d4d4d8; padding-top: 8px;">
+                        <strong>NARRATIVE EXPLANATION:</strong>
+                        <div style="font-family: var(--font-sans); margin-top: 4px; color: var(--ink-secondary);">
+                            Automated ML XGBoost scoring in conjunction with FATF Recommendation 10 and Recommendation 20 detected instantaneous 100% account drainage from $145,000.00 to $0.00 via CASH_OUT channel immediately following external deposit. Pattern indicates probable mule syndicate behavior and illicit asset liquidation. Immediate freezing and SAR filing recommended.
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button class="btn btn-outline" id="btn-copy-sar-json">
+                        <i data-lucide="copy"></i> Copy SAR Text
+                    </button>
+                    <button class="btn btn-black" id="btn-export-sar-pdf">
+                        <i data-lucide="download"></i> Export Official SAR (JSON)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

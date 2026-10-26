@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexGuard — Officer Authentication & Access</title>
+    <link rel="icon" type="image/svg+xml" href="/static/assets/logo.svg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            background-image: radial-gradient(circle, #cbd5e1 1.25px, transparent 1.25px);
+            background-size: 24px 24px;
+            padding: 24px;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .login-card {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            padding: 38px 36px;
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .login-header-group {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .login-logo {
+            width: 46px;
+            height: 46px;
+            margin-bottom: 14px;
+        }
+
+        .login-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--ink-primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .login-subtitle {
+            font-size: 0.86rem;
+            color: var(--ink-secondary);
+            line-height: 1.5;
+        }
+
+        /* Mode Switcher Tabs */
+        .auth-tab-row {
+            display: flex;
+            background: #f4f4f5;
+            border-radius: var(--radius-sm);
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .auth-tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--ink-secondary);
+            background: transparent;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .auth-tab-btn.active {
+            background: #ffffff;
+            color: var(--ink-primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .demo-pills-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .demo-pill-btn {
+            flex: 1;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 7px 10px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--ink-primary);
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .demo-pill-btn:hover {
+            border-color: #09090b;
+            background: var(--bg-subtle);
+        }
+
+        .alert-banner {
+            display: none;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            margin-bottom: 16px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .success-banner {
+            display: none;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            margin-bottom: 16px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .password-wrap {
+            position: relative;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--ink-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            color: var(--ink-muted);
+            text-decoration: none;
+            margin-top: 22px;
+            transition: color 0.15s;
+        }
+
+        .back-link:hover {
+            color: var(--ink-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header-group">
+                <a href="/">
+                    <img src="/static/assets/logo.svg" alt="ApexGuard Logo" class="login-logo">
+                </a>
+                <h1 class="login-title" id="page-auth-title">Sign in to ApexGuard</h1>
+                <p class="login-subtitle" id="page-auth-subtitle">
+                    Enter compliance officer credentials to access real-time financial surveillance.
+                </p>
+            </div>
+
+            <!-- Tab Switcher: Sign In vs Sign Up -->
+            <div class="auth-tab-row">
+                <button type="button" class="auth-tab-btn active" id="tab-btn-signin">
+                    <i data-lucide="log-in" style="width: 14px; height: 14px;"></i> Sign In
+                </button>
+                <button type="button" class="auth-tab-btn" id="tab-btn-signup">
+                    <i data-lucide="user-plus" style="width: 14px; height: 14px;"></i> Create Account
+                </button>
+            </div>
+
+            <!-- Status Banners -->
+            <div class="alert-banner" id="auth-error-alert">
+                <i data-lucide="alert-circle" style="width: 16px; height: 16px; flex-shrink: 0;"></i>
+                <span id="auth-error-text">Authentication failed</span>
+            </div>
+
+            <div class="success-banner" id="auth-success-alert">
+                <i data-lucide="check-circle-2" style="width: 16px; height: 16px; flex-shrink: 0;"></i>
+                <span id="auth-success-text">Success! Redirecting...</span>
+            </div>
+
+            <!-- ==========================================
+                 PANE 1: SIGN IN FORM
+                 ========================================== -->
+            <div id="signin-pane">
+                <!-- 1-Click Fast Fill for Presentation -->
+                <div style="font-size: 0.72rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 8px;">
+                    Fast Access Credentials:
+                </div>
+                <div class="demo-pills-row">
+                    <button type="button" class="demo-pill-btn" id="btn-demo-admin">
+                        <img src="/static/assets/admin_avatar.svg" style="width: 18px; height: 18px; border-radius: 50%;" alt="Admin">
+                        <span>Admin (Sarah, CCO)</span>
+                    </button>
+                    <button type="button" class="demo-pill-btn" id="btn-demo-analyst">
+                        <img src="/static/assets/analyst_avatar.svg" style="width: 18px; height: 18px; border-radius: 50%;" alt="Analyst">
+                        <span>Analyst (Alex, Lead)</span>
+                    </button>
+                </div>
+
+                <form id="dedicated-login-form">
+                    <div class="form-field" style="margin-bottom: 14px;">
+                        <label class="field-label">Username or Corporate Email</label>
+                        <input type="text" class="field-input" id="login-username" value="admin" placeholder="e.g. admin" required>
+                    </div>
+
+                    <div class="form-field" style="margin-bottom: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <label class="field-label">Password</label>
+                            <span style="font-size: 0.72rem; color: var(--ink-muted);">Default: Admin@123</span>
+                        </div>
+                        <div class="password-wrap">
+                            <input type="password" class="field-input" id="login-password" value="Admin@123" required style="width: 100%; padding-right: 40px;">
+                            <button type="button" class="password-toggle-btn" id="btn-toggle-password" title="Show / Hide Password">
+                                <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; font-size: 0.8rem;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--ink-secondary);">
+                            <input type="checkbox" checked style="accent-color: #09090b;"> Keep session active (24h)
+                        </label>
+                        <span style="color: var(--ink-muted); font-size: 0.76rem;">TLS 1.3 Encrypted</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-black" style="width: 100%; padding: 12px; font-size: 0.92rem;" id="btn-login-submit">
+                        <i data-lucide="log-in" style="width: 16px; height: 16px;"></i> Sign In to Surveillance Console
+                    </button>
+                </form>
+            </div>
+
+            <!-- ==========================================
+                 PANE 2: SIGN UP / REGISTER FORM
+                 ========================================== -->
+            <div id="signup-pane" style="display: none;">
+                <form id="dedicated-register-form">
+                    <div class="form-field" style="margin-bottom: 12px;">
+                        <label class="field-label">Full Name</label>
+                        <input type="text" class="field-input" id="reg-fullname" placeholder="e.g. Zaheer Ahmed" required>
+                    </div>
+
+                    <div class="form-field" style="margin-bottom: 12px;">
+                        <label class="field-label">Corporate Email</label>
+                        <input type="email" class="field-input" id="reg-email" placeholder="e.g. zaheer@apexguard.internal" required>
+                    </div>
+
+                    <div class="form-field" style="margin-bottom: 12px;">
+                        <label class="field-label">Desired Username</label>
+                        <input type="text" class="field-input" id="reg-username" placeholder="e.g. zaheer" required>
+                    </div>
+
+                    <div class="form-field" style="margin-bottom: 12px;">
+                        <label class="field-label">Institutional Role</label>
+                        <select class="field-select" id="reg-role">
+                            <option value="analyst">AML Surveillance Analyst</option>
+                            <option value="officer">Chief Compliance Officer</option>
+                            <option value="auditor">Risk & Regulatory Auditor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field" style="margin-bottom: 20px;">
+                        <label class="field-label">Secure Password</label>
+                        <div class="password-wrap">
+                            <input type="password" class="field-input" id="reg-password" placeholder="Create strong password" required style="width: 100%; padding-right: 40px;">
+                            <button type="button" class="password-toggle-btn" id="btn-toggle-reg-password" title="Show / Hide Password">
+                                <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-black" style="width: 100%; padding: 12px; font-size: 0.92rem;" id="btn-register-submit">
+                        <i data-lucide="user-check" style="width: 16px; height: 16px;"></i> Create Officer Account
+                    </button>
+                </form>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="/" class="back-link">
+                    <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Return to Overview Landing Page
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) window.lucide.createIcons();
+
+            const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                ? ''
+                : (localStorage.getItem('apex_api_url') || window.APEXGUARD_API_URL || '');
+
+            const errorAlert = document.getElementById('auth-error-alert');
+            const errorText = document.getElementById('auth-error-text');
+            const successAlert = document.getElementById('auth-success-alert');
+            const successText = document.getElementById('auth-success-text');
+
+            const tabSignin = document.getElementById('tab-btn-signin');
+            const tabSignup = document.getElementById('tab-btn-signup');
+            const signinPane = document.getElementById('signin-pane');
+            const signupPane = document.getElementById('signup-pane');
+            const authTitle = document.getElementById('page-auth-title');
+            const authSubtitle = document.getElementById('page-auth-subtitle');
+
+            // Tab Switching Logic
+            function showSignIn() {
+                tabSignin.classList.add('active');
+                tabSignup.classList.remove('active');
+                signinPane.style.display = 'block';
+                signupPane.style.display = 'none';
+                authTitle.textContent = 'Sign in to ApexGuard';
+                authSubtitle.textContent = 'Enter compliance officer credentials to access real-time financial surveillance.';
+                errorAlert.style.display = 'none';
+                successAlert.style.display = 'none';
+            }
+
+            function showSignUp() {
+                tabSignup.classList.add('active');
+                tabSignin.classList.remove('active');
+                signinPane.style.display = 'none';
+                signupPane.style.display = 'block';
+                authTitle.textContent = 'Create Analyst Account';
+                authSubtitle.textContent = 'Register a new institutional profile for the AML investigation rail.';
+                errorAlert.style.display = 'none';
+                successAlert.style.display = 'none';
+            }
+
+            tabSignin.addEventListener('click', showSignIn);
+            tabSignup.addEventListener('click', showSignUp);
+
+            // Handle ?mode=signup in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('mode') === 'signup') {
+                showSignUp();
+            }
+
+            // Quick demo fill buttons
+            document.getElementById('btn-demo-admin')?.addEventListener('click', () => {
+                document.getElementById('login-username').value = 'admin';
+                document.getElementById('login-password').value = 'Admin@123';
+                errorAlert.style.display = 'none';
+            });
+
+            document.getElementById('btn-demo-analyst')?.addEventListener('click', () => {
+                document.getElementById('login-username').value = 'analyst';
+                document.getElementById('login-password').value = 'Analyst@123';
+                errorAlert.style.display = 'none';
+            });
+
+            // Password toggles
+            function setupPasswordToggle(btnId, inputId) {
+                const btn = document.getElementById(btnId);
+                const input = document.getElementById(inputId);
+                btn?.addEventListener('click', () => {
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        btn.innerHTML = '<i data-lucide="eye-off" style="width: 16px; height: 16px;"></i>';
+                    } else {
+                        input.type = 'password';
+                        btn.innerHTML = '<i data-lucide="eye" style="width: 16px; height: 16px;"></i>';
+                    }
+                    if (window.lucide) window.lucide.createIcons();
+                });
+            }
+
+            setupPasswordToggle('btn-toggle-password', 'login-password');
+            setupPasswordToggle('btn-toggle-reg-password', 'reg-password');
+
+            // Handle Login
+            document.getElementById('dedicated-login-form')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorAlert.style.display = 'none';
+                successAlert.style.display = 'none';
+
+                const submitBtn = document.getElementById('btn-login-submit');
+                submitBtn.innerHTML = '<i data-lucide="loader-2" class="animate-spin" style="width: 16px; height: 16px;"></i> Authenticating...';
+                submitBtn.disabled = true;
+                if (window.lucide) window.lucide.createIcons();
+
+                const username = document.getElementById('login-username').value.trim();
+                const password = document.getElementById('login-password').value;
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    if (!response.ok) {
+                        const err = await response.json().catch(() => ({ detail: 'Invalid credentials' }));
+                        throw new Error(err.detail || 'Authentication failed');
+                    }
+
+                    const data = await response.json();
+                    localStorage.setItem('apex_jwt_token', data.access_token);
+                    localStorage.setItem('apex_user', JSON.stringify(data.user));
+
+                    successText.textContent = `Access granted! Welcome, ${data.user.full_name || data.user.username}.`;
+                    successAlert.style.display = 'flex';
+                    submitBtn.innerHTML = '<i data-lucide="check" style="width: 16px; height: 16px;"></i> Authenticated! Redirecting...';
+                    if (window.lucide) window.lucide.createIcons();
+
+                    setTimeout(() => { window.location.href = '/app'; }, 400);
+
+                } catch (err) {
+                    errorText.textContent = err.message;
+                    errorAlert.style.display = 'flex';
+                    submitBtn.innerHTML = '<i data-lucide="log-in" style="width: 16px; height: 16px;"></i> Sign In to Surveillance Console';
+                    submitBtn.disabled = false;
+                    if (window.lucide) window.lucide.createIcons();
+                }
+            });
+
+            // Handle Register
+            document.getElementById('dedicated-register-form')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorAlert.style.display = 'none';
+                successAlert.style.display = 'none';
+
+                const submitBtn = document.getElementById('btn-register-submit');
+                submitBtn.innerHTML = '<i data-lucide="loader-2" class="animate-spin" style="width: 16px; height: 16px;"></i> Creating Account...';
+                submitBtn.disabled = true;
+                if (window.lucide) window.lucide.createIcons();
+
+                const full_name = document.getElementById('reg-fullname').value.trim();
+                const email = document.getElementById('reg-email').value.trim();
+                const username = document.getElementById('reg-username').value.trim();
+                const role = document.getElementById('reg-role').value;
+                const password = document.getElementById('reg-password').value;
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ full_name, email, username, role, password })
+                    });
+
+                    if (!response.ok) {
+                        const err = await response.json().catch(() => ({ detail: 'Registration failed' }));
+                        throw new Error(err.detail || 'Registration failed');
+                    }
+
+                    const data = await response.json();
+                    localStorage.setItem('apex_jwt_token', data.access_token);
+                    localStorage.setItem('apex_user', JSON.stringify(data.user));
+
+                    successText.textContent = `Account created successfully! Redirecting to Console...`;
+                    successAlert.style.display = 'flex';
+                    submitBtn.innerHTML = '<i data-lucide="check" style="width: 16px; height: 16px;"></i> Account Created! Launching...';
+                    if (window.lucide) window.lucide.createIcons();
+
+                    setTimeout(() => { window.location.href = '/app'; }, 600);
+
+                } catch (err) {
+                    errorText.textContent = err.message;
+                    errorAlert.style.display = 'flex';
+                    submitBtn.innerHTML = '<i data-lucide="user-check" style="width: 16px; height: 16px;"></i> Create Officer Account';
+                    submitBtn.disabled = false;
+                    if (window.lucide) window.lucide.createIcons();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+{
+  "timestamp": "2026-10-26T13:34:18.876219",
+  "dataset_size": 40000,
+  "fraud_count": 600,
+  "feature_names": [
+    "amount",
+    "oldbalanceOrg",
+    "newbalanceOrig",
+    "oldbalanceDest",
+    "newbalanceDest",
+    "orig_diff",
+    "dest_diff",
+    "error_orig",
+    "error_dest",
+    "is_orig_drained",
+    "amount_to_oldbalance",
+    "type_PAYMENT",
+    "type_TRANSFER",
+    "type_CASH_OUT",
+    "type_CASH_IN",
+    "type_DEBIT"
+  ],
+  "metrics": {
+    "xgboost": {
+      "auc": 1.0,
+      "average_precision": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "random_forest": {
+      "auc": 1.0,
+      "f1": 0.9934
+    }
+  },
+  "feature_importance": [
+    {
+      "feature": "orig_diff",
+      "importance": 0.9513
+    },
+    {
+      "feature": "type_PAYMENT",
+      "importance": 0.0155
+    },
+    {
+      "feature": "newbalanceOrig",
+      "importance": 0.0085
+    },
+    {
+      "feature": "oldbalanceOrg",
+      "importance": 0.0055
+    },
+    {
+      "feature": "error_dest",
+      "importance": 0.0046
+    },
+    {
+      "feature": "error_orig",
+      "importance": 0.0045
+    },
+    {
+      "feature": "type_CASH_IN",
+      "importance": 0.0042
+    },
+    {
+      "feature": "type_TRANSFER",
+      "importance": 0.0033
+    },
+    {
+      "feature": "oldbalanceDest",
+      "importance": 0.0015
+    },
+    {
+      "feature": "newbalanceDest",
+      "importance": 0.0007
+    }
+  ]
+}

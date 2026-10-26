@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#09090b"/>
+      <stop offset="100%" stop-color="#27272a"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#3f3f46"/>
+    </linearGradient>
+    <filter id="subtleDrop" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Outer Shield Geometry -->
+  <path d="M 60 10 
+           C 85 10, 106 20, 106 42
+           C 106 72, 85 96, 60 110
+           C 35 96, 14 72, 14 42
+           C 14 20, 35 10, 60 10 Z" 
+        fill="url(#shieldGrad)" 
+        filter="url(#subtleDrop)"/>
+
+  <!-- Inner Dynamic Circuit Facet -->
+  <path d="M 60 22
+           C 78 22, 94 30, 94 46
+           C 94 68, 76 86, 60 97
+           C 44 86, 26 68, 26 46
+           C 26 30, 42 22, 60 22 Z"
+        fill="none" 
+        stroke="#ffffff" 
+        stroke-opacity="0.12" 
+        stroke-width="2"/>
+
+  <!-- Geometric Interlocking Apex Node (Monochrome Crisp) -->
+  <path d="M 42 50 L 54 62 L 78 38" 
+        fill="none" 
+        stroke="#ffffff" 
+        stroke-width="7" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Dynamic Security Pulse Node -->
+  <circle cx="60" cy="80" r="4" fill="#ffffff" fill-opacity="0.9"/>
+  <circle cx="44" cy="74" r="2.5" fill="#ffffff" fill-opacity="0.4"/>
+  <circle cx="76" cy="74" r="2.5" fill="#ffffff" fill-opacity="0.4"/>
+</svg>

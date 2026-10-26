@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/login",
+      "dest": "/static/login.html"
+    },
+    {
+      "src": "/app",
+      "dest": "/static/app.html"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "https://apexguard-api.onrender.com/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/static/landing.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    }
+  ]
+}

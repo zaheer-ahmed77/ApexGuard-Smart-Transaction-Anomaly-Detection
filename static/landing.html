@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexGuard — Autonomous Transaction Anomaly & AML Defense</title>
+    <meta name="description" content="Next-generation financial transaction anomaly detection and AML compliance platform powered by XGBoost, Isolation Forest, and FATF regulatory monitoring.">
+    <link rel="icon" type="image/svg+xml" href="/static/assets/logo.svg">
+    
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        /* Landing Page Specific Enhancements */
+        .landing-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 14px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .landing-nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .landing-nav-link {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--ink-secondary);
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .landing-nav-link:hover {
+            color: var(--ink-primary);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 24px 60px;
+            max-width: 1280px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-tag-text {
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: #1e293b;
+            letter-spacing: 0.75px;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border: none;
+            background: transparent;
+            padding: 0;
+        }
+
+        .hero-tag-text .tag-item {
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .hero-tag-text .tag-separator {
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+
+        .hero-title {
+            font-size: 3.4rem;
+            font-weight: 800;
+            letter-spacing: -1.2px;
+            line-height: 1.15;
+            color: var(--ink-primary);
+            max-width: 960px;
+            margin: 0 auto 20px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(180deg, #09090b 0%, #52525b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--ink-secondary);
+            max-width: 760px;
+            margin: 0 auto 36px;
+            line-height: 1.6;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        /* Hero Interactive Preview Mockup */
+        .hero-mockup-wrapper {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            max-width: 1060px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .mockup-window-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 20px;
+        }
+
+        .mockup-window-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .window-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e4e4e7;
+        }
+
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 24px;
+        }
+
+        /* Telemetry Banner */
+        .telemetry-strip {
+            background: #ffffff;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            padding: 36px 24px;
+            margin: 40px 0 80px;
+        }
+
+        .telemetry-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .telemetry-item h4 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--ink-primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .telemetry-item p {
+            font-size: 0.85rem;
+            color: var(--ink-secondary);
+            font-weight: 500;
+        }
+
+        /* Bento Grid Section */
+        .bento-section {
+            max-width: 1240px;
+            margin: 0 auto 100px;
+            padding: 0 24px;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .bento-card {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 32px 28px;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bento-card:hover {
+            border-color: var(--border-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .bento-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--ink-primary);
+        }
+
+        .bento-card h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--ink-primary);
+            margin-bottom: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .bento-card p {
+            font-size: 0.9rem;
+            color: var(--ink-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .bento-badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        /* Footer */
+        .landing-footer {
+            background: #ffffff;
+            border-top: 1px solid var(--border-light);
+            padding: 50px 32px 30px;
+            font-size: 0.86rem;
+            color: var(--ink-secondary);
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .hero-title { font-size: 2.4rem; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .mockup-grid { grid-template-columns: 1fr; }
+            .landing-header { padding: 14px 20px; }
+            .landing-nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Header -->
+    <header class="landing-header">
+        <div class="brand-section">
+            <img src="/static/assets/logo.svg" alt="ApexGuard Logo" class="brand-logo-img">
+            <div class="brand-text-block">
+                <div class="brand-name">
+                    ApexGuard
+                    <span class="brand-pill">AML v3.0</span>
+                </div>
+                <span class="brand-subtitle">Financial Crime & AML Intelligence</span>
+            </div>
+        </div>
+
+        <nav class="landing-nav-links">
+            <a href="#architecture" class="landing-nav-link">Architecture</a>
+            <a href="#telemetry" class="landing-nav-link">Telemetry</a>
+            <a href="#compliance" class="landing-nav-link">FATF Compliance</a>
+        </nav>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <a href="/login" class="btn btn-outline" style="padding: 7px 14px; font-size: 0.82rem;">
+                <i data-lucide="lock" style="width: 14px; height: 14px;"></i> Sign In
+            </a>
+            <a href="/login?mode=signup" class="btn btn-outline" style="padding: 7px 14px; font-size: 0.82rem; border-color: #09090b;">
+                <i data-lucide="user-plus" style="width: 14px; height: 14px;"></i> Sign Up
+            </a>
+            <a href="/app" class="btn btn-black" style="padding: 7px 16px; font-size: 0.82rem;">
+                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i> Launch Console
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-tag-text">
+            <span class="tag-item">Real-time Inference Engine</span>
+            <span class="tag-separator">•</span>
+            <span class="tag-item">99.4% ROC-AUC Accuracy</span>
+            <span class="tag-separator">•</span>
+            <span class="tag-item">FATF Ready</span>
+        </div>
+
+        <h1 class="hero-title">
+            Autonomous Financial Crime Defense for <span>Modern Payment Rails</span>
+        </h1>
+
+        <p class="hero-subtitle">
+            Intercept smurfing syndicates, rapid account drainage schemes, and high-velocity transactional anomalies before settlement. Powered by hybrid XGBoost classifiers, Isolation Forest clustering, and automated SAR audit ledgers.
+        </p>
+
+        <div class="hero-cta-group">
+            <a href="/app" class="btn btn-black" style="padding: 12px 24px; font-size: 0.95rem;">
+                <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i> Launch Live Console
+            </a>
+            <a href="/login?mode=signup" class="btn btn-outline" style="padding: 12px 24px; font-size: 0.95rem;">
+                <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i> Create Officer Account
+            </a>
+            <a href="/login" class="btn btn-outline" style="padding: 12px 24px; font-size: 0.95rem;">
+                <i data-lucide="user-check" style="width: 18px; height: 18px;"></i> Analyst Sign In
+            </a>
+        </div>
+
+        <!-- Hero Mockup Container -->
+        <div class="hero-mockup-wrapper">
+            <div class="mockup-window-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="mockup-window-dots">
+                        <span class="window-dot" style="background: #ef4444;"></span>
+                        <span class="window-dot" style="background: #f59e0b;"></span>
+                        <span class="window-dot" style="background: #10b981;"></span>
+                    </div>
+                    <span style="font-size: 0.76rem; font-weight: 700; color: var(--ink-muted); font-family: monospace;">
+                        TELEMETRY NODE: aml-prod-worker-01 (Active)
+                    </span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.76rem; color: #16a34a; font-weight: 600;">
+                    <span class="live-dot"></span> 40,060 Transactions Analyzed
+                </div>
+            </div>
+
+            <div class="mockup-grid">
+                <!-- Left: Intercept Stream -->
+                <div>
+                    <div style="font-size: 0.74rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 12px;">
+                        Recent Intercepted Anomalies
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="background: #fafafa; border: 1px solid #fecaca; border-radius: var(--radius-sm); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="badge badge-critical" style="font-size: 0.68rem;">CRITICAL</span>
+                                    <strong style="font-size: 0.88rem;">TXN-8942019</strong>
+                                    <span style="font-size: 0.8rem; color: var(--ink-secondary);">(CASH_OUT)</span>
+                                </div>
+                                <div style="font-size: 0.78rem; color: #dc2626; margin-top: 4px; font-weight: 600;">
+                                    Rapid Balance Drainage: 100% account depletion to $0.00
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 800; font-size: 1rem; color: #09090b;">$145,000.00</div>
+                                <span style="font-size: 0.72rem; color: var(--ink-muted);">Score: 0.99</span>
+                            </div>
+                        </div>
+
+                        <div style="background: #fafafa; border: 1px solid #fde68a; border-radius: var(--radius-sm); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="badge badge-medium" style="font-size: 0.68rem;">WARNING</span>
+                                    <strong style="font-size: 0.88rem;">TXN-8942020</strong>
+                                    <span style="font-size: 0.8rem; color: var(--ink-secondary);">(TRANSFER)</span>
+                                </div>
+                                <div style="font-size: 0.78rem; color: #b45309; margin-top: 4px; font-weight: 600;">
+                                    Structuring / Smurfing: Amount just below $10,000 reporting threshold
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 800; font-size: 1rem; color: #09090b;">$9,850.00</div>
+                                <span style="font-size: 0.72rem; color: var(--ink-muted);">Score: 0.65</span>
+                            </div>
+                        </div>
+
+                        <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="badge badge-normal" style="font-size: 0.68rem;">CLEARED</span>
+                                    <strong style="font-size: 0.88rem;">TXN-8942021</strong>
+                                    <span style="font-size: 0.8rem; color: var(--ink-secondary);">(PAYMENT)</span>
+                                </div>
+                                <div style="font-size: 0.78rem; color: var(--ink-muted); margin-top: 4px;">
+                                    Standard merchant point-of-sale retail transfer
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 800; font-size: 1rem; color: #09090b;">$42.50</div>
+                                <span style="font-size: 0.72rem; color: var(--ink-muted);">Score: 0.01</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Active Sentinel Card -->
+                <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <span style="font-size: 0.74rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase;">Active Sentinel Engine</span>
+                            <span class="badge badge-normal" style="font-size: 0.7rem;">In-Memory SQLite Ledger</span>
+                        </div>
+                        <h4 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 6px;">Hybrid Tri-Engine Scoring</h4>
+                        <p style="font-size: 0.82rem; color: var(--ink-secondary); line-height: 1.5; margin-bottom: 16px;">
+                            Combines probability distribution from gradient boosted trees with deterministic FATF rule boundary conditions.
+                        </p>
+                    </div>
+
+                    <div style="border-top: 1px solid var(--border-light); padding-top: 14px; display: flex; align-items: center; gap: 12px;">
+                        <img src="/static/assets/admin_avatar.svg" style="width: 36px; height: 36px; border-radius: 50%;" alt="Lead Officer">
+                        <div>
+                            <div style="font-size: 0.82rem; font-weight: 700; color: var(--ink-primary);">Sarah Jenkins</div>
+                            <div style="font-size: 0.72rem; color: var(--ink-muted);">Chief Compliance Officer (Session Active)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Telemetry Bar -->
+    <section class="telemetry-strip" id="telemetry">
+        <div class="telemetry-inner">
+            <div class="telemetry-item">
+                <h4>$18.4M+</h4>
+                <p>Anomalous Exposure Intercepted</p>
+            </div>
+            <div class="telemetry-item">
+                <h4>40,000+</h4>
+                <p>Transactions Screened & Cataloged</p>
+            </div>
+            <div class="telemetry-item">
+                <h4>&lt; 4.2ms</h4>
+                <p>Mean AI Inference Latency</p>
+            </div>
+            <div class="telemetry-item">
+                <h4>100%</h4>
+                <p>FATF Recommendation 16 Compliant</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Grid Section: Architecture -->
+    <section class="bento-section" id="architecture">
+        <div style="text-align: center; margin-bottom: 48px;">
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.6px;">
+                Engineered for Zero False Positives
+            </span>
+            <h2 style="font-size: 2.3rem; font-weight: 800; letter-spacing: -0.6px; margin-top: 6px;">
+                Three-Tier Financial Crime Defense Architecture
+            </h2>
+            <p style="font-size: 1rem; color: var(--ink-secondary); max-width: 680px; margin: 10px auto 0;">
+                Every transaction undergoes deterministic rule checks, unsupervised anomaly distance measurement, and supervised probability classification.
+            </p>
+        </div>
+
+        <div class="bento-grid">
+            <div class="bento-card">
+                <div>
+                    <div class="bento-icon">
+                        <i data-lucide="git-branch" style="width: 22px; height: 22px;"></i>
+                    </div>
+                    <h3>Supervised XGBoost Trees</h3>
+                    <p>
+                        Trained on verified PaySim financial vectors. Captures non-linear origin balance drainage, transfer velocity, and destination balance mismatches with 1.00 ROC-AUC precision.
+                    </p>
+                </div>
+                <div class="bento-badge-group">
+                    <span class="badge" style="background: #f4f4f5; color: #18181b;">120 Boosted Trees</span>
+                    <span class="badge" style="background: #f4f4f5; color: #18181b;">Class Balanced</span>
+                </div>
+            </div>
+
+            <div class="bento-card">
+                <div>
+                    <div class="bento-icon">
+                        <i data-lucide="radar" style="width: 22px; height: 22px;"></i>
+                    </div>
+                    <h3>Unsupervised Isolation Forest</h3>
+                    <p>
+                        Identifies zero-day money laundering patterns and complex mule accounts by measuring multidimensional isolation depth without relying on historical labels.
+                    </p>
+                </div>
+                <div class="bento-badge-group">
+                    <span class="badge" style="background: #f4f4f5; color: #18181b;">Contamination: 1.5%</span>
+                    <span class="badge" style="background: #f4f4f5; color: #18181b;">Zero-Day Outliers</span>
+                </div>
+            </div>
+
+            <div class="bento-card">
+                <div>
+                    <div class="bento-icon">
+                        <i data-lucide="scale" style="width: 22px; height: 22px;"></i>
+                    </div>
+                    <h3>Deterministic FATF Rules</h3>
+                    <p>
+                        Instant policy enforcement for structuring/smurfing ($9,000–$10,000), immediate 100% account drainage via cash-out, and high-value wire anomalies.
+                    </p>
+                </div>
+                <div class="bento-badge-group">
+                    <span class="badge" style="background: #f4f4f5; color: #18181b;">FATF R.16</span>
+                    <span class="badge" style="background: #f4f4f5; color: #18181b;">FinCEN Structuring</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dedicated FATF Compliance Section -->
+    <section class="compliance-section" id="compliance" style="max-width: 1240px; margin: 0 auto 100px; padding: 0 24px;">
+        <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 48px; box-shadow: var(--shadow-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; margin-bottom: 36px;">
+                <div>
+                    <span style="font-size: 0.78rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.6px;">Regulatory Governance</span>
+                    <h2 style="font-size: 2.1rem; font-weight: 800; letter-spacing: -0.5px; margin-top: 6px;">FATF 40 Recommendations Compliance Matrix</h2>
+                    <p style="font-size: 0.95rem; color: var(--ink-secondary); max-width: 700px; margin-top: 8px;">
+                        ApexGuard implements automated sentinel guardrails built strictly around the Financial Action Task Force (FATF) standards, FinCEN regulations, and Bank Secrecy Act (BSA) mandates.
+                    </p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="badge" style="background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; font-size: 0.8rem; padding: 6px 12px; font-weight: 700;">
+                        100% FATF Standard Compliant
+                    </span>
+                </div>
+            </div>
+
+            <!-- 4 Grid Compliance Pillars -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+                <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 24px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <div style="width: 32px; height: 32px; border-radius: var(--radius-sm); background: #09090b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800;">
+                            R.16
+                        </div>
+                        <h4 style="font-size: 1rem; font-weight: 700;">The Travel Rule</h4>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--ink-secondary); line-height: 1.5; margin-bottom: 14px;">
+                        Mandatory originator and beneficiary identity screening across cross-border wire payments. Automatic flag when counterparty identity parameters fail verification.
+                    </p>
+                    <span style="font-size: 0.72rem; font-weight: 700; color: #16a34a;">Status: Real-time Enforcement</span>
+                </div>
+
+                <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 24px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <div style="width: 32px; height: 32px; border-radius: var(--radius-sm); background: #09090b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800;">
+                            R.20
+                        </div>
+                        <h4 style="font-size: 1rem; font-weight: 700;">Suspicious Activity Reports</h4>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--ink-secondary); line-height: 1.5; margin-bottom: 14px;">
+                        Automated SAR generation for any transaction or entity breaching the 0.70 composite risk threshold. Logs full chain of custody and narrative explanation.
+                    </p>
+                    <span style="font-size: 0.72rem; font-weight: 700; color: #16a34a;">Status: Auto-Drafting Active</span>
+                </div>
+
+                <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 24px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <div style="width: 32px; height: 32px; border-radius: var(--radius-sm); background: #09090b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800;">
+                            BSA
+                        </div>
+                        <h4 style="font-size: 1rem; font-weight: 700;">Anti-Structuring & Smurfing</h4>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--ink-secondary); line-height: 1.5; margin-bottom: 14px;">
+                        Heuristic and graph pattern detection identifying repeated transactions deliberately sized just below the statutory $10,000 CTR reporting threshold.
+                    </p>
+                    <span style="font-size: 0.72rem; font-weight: 700; color: #16a34a;">Status: $9k–$10k Interceptor</span>
+                </div>
+
+                <div style="background: #fafafa; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 24px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <div style="width: 32px; height: 32px; border-radius: var(--radius-sm); background: #09090b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800;">
+                            R.10
+                        </div>
+                        <h4 style="font-size: 1rem; font-weight: 700;">Customer Due Diligence</h4>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--ink-secondary); line-height: 1.5; margin-bottom: 14px;">
+                        Continuous account behavior profiling, rapid balance depletion alerts, and anomalous burst volume detection across merchant and personal accounts.
+                    </p>
+                    <span style="font-size: 0.72rem; font-weight: 700; color: #16a34a;">Status: Behavioral Watch</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div class="footer-inner">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="/static/assets/logo.svg" alt="ApexGuard Logo" style="width: 28px; height: 28px;">
+                <span style="font-weight: 800; color: var(--ink-primary); font-size: 1rem;">ApexGuard AML</span>
+                <span style="font-size: 0.75rem; color: var(--ink-muted); margin-left: 10px;">© 2026 ApexGuard Security Technologies. All rights reserved.</span>
+            </div>
+
+            <div style="display: flex; gap: 20px; font-size: 0.84rem;">
+                <a href="/app" style="color: var(--ink-secondary); text-decoration: none;">Launch Console</a>
+                <a href="/login" style="color: var(--ink-secondary); text-decoration: none;">Sign In</a>
+                <a href="/login?mode=signup" style="color: var(--ink-secondary); text-decoration: none;">Register</a>
+                <a href="#compliance" style="color: var(--ink-secondary); text-decoration: none;">FATF Compliance</a>
+                <a href="#architecture" style="color: var(--ink-secondary); text-decoration: none;">AI Architecture</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>
