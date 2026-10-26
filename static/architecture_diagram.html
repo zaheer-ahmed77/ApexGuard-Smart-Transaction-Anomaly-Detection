@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexGuard — System Methodology & Architecture Diagram</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #ffffff;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            width: 1792px;
+            height: 1024px;
+            overflow: hidden;
+        }
+
+        .canvas {
+            width: 1740px;
+            height: 976px;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 28px 32px;
+            position: relative;
+            display: grid;
+            grid-template-columns: 380px 1fr 340px;
+            grid-template-rows: 350px 1fr;
+            gap: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Category Boxes */
+        .box {
+            border-radius: 14px;
+            padding: 20px 22px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box-badge {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        /* Box 1: CI/CD & Cloud Deployment */
+        .box-cicd {
+            border: 2px solid #93c5fd;
+            background: #f8fafc;
+        }
+        .box-cicd .box-badge {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1.5px solid #bfdbfe;
+        }
+
+        /* Box 2: AI Inference Core */
+        .box-ai {
+            border: 2px solid #fcd34d;
+            background: #fffbeb;
+        }
+        .box-ai .box-badge {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1.5px solid #fde68a;
+        }
+
+        /* Box 3: Database & Ledger */
+        .box-db {
+            border: 2px solid #d8b4fe;
+            background: #faf5ff;
+        }
+        .box-db .box-badge {
+            background: #f3e8ff;
+            color: #7e22ce;
+            border: 1.5px solid #e9d5ff;
+        }
+
+        /* Box 4: User & Frontend (Bottom Left) */
+        .box-user-flow {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 10px;
+        }
+
+        /* Box 5: Central Backend (Bottom Center) */
+        .box-backend {
+            border: 2.5px solid #a855f7;
+            background: #fdf4ff;
+            border-radius: 16px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.08);
+            position: relative;
+        }
+
+        /* Box 6: Compliance & Audit Reporting (Bottom Right) */
+        .box-compliance {
+            border: 2px solid #86efac;
+            background: #f0fdf4;
+        }
+        .box-compliance .box-badge {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1.5px solid #bbf7d0;
+        }
+
+        /* Card Elements */
+        .card-node {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+
+        .node-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .node-icon-wrap {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .node-title {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .node-desc {
+            font-size: 0.74rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        /* Connector Arrows & Flow */
+        .connector-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .flow-pill {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #334155;
+            white-space: nowrap;
+        }
+
+        /* SVG overlay for connectors */
+        .svg-connectors {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas">
+
+        <!-- ==========================================
+             BOX 1: CI/CD & CLOUD DEPLOYMENT (TOP LEFT)
+             ========================================== -->
+        <div class="box box-cicd">
+            <span class="box-badge">CI/CD & Cloud Deployment</span>
+
+            <div style="display: flex; height: 100%; align-items: center; gap: 14px;">
+                <!-- GitHub Card -->
+                <div class="card-node" style="width: 155px; text-align: center; padding: 18px 12px;">
+                    <div style="width: 44px; height: 44px; background: #09090b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: #fff;">
+                        <i data-lucide="github" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <div class="node-title" style="font-size: 0.82rem;">GitHub Repo</div>
+                    <div style="font-size: 0.68rem; color: #64748b; margin-top: 4px;">zaheer-ahmed77 / ApexGuard</div>
+                    <span style="display: inline-block; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; color: #0284c7; margin-top: 6px;">Git Main Branch</span>
+                </div>
+
+                <!-- Split Arrows to Vercel & Render -->
+                <div style="display: flex; flex-direction: column; justify-content: space-around; height: 85%; flex: 1;">
+                    <!-- Vercel Card -->
+                    <div class="card-node" style="border-left: 3px solid #000;">
+                        <div class="node-header">
+                            <div class="node-icon-wrap" style="background: #000; color: #fff;">
+                                <i data-lucide="triangle" style="width: 16px; height: 16px; transform: rotate(90deg);"></i>
+                            </div>
+                            <div>
+                                <div class="node-title">Vercel Deployment</div>
+                                <div class="node-desc">Static Edge CDN & Reverse Proxy</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Render Card -->
+                    <div class="card-node" style="border-left: 3px solid #14b8a6;">
+                        <div class="node-header">
+                            <div class="node-icon-wrap" style="background: #ccfbf1; color: #0f766e;">
+                                <i data-lucide="server" style="width: 18px; height: 18px;"></i>
+                            </div>
+                            <div>
+                                <div class="node-title">Render Web Service</div>
+                                <div class="node-desc">Python 3.11 Linux Container + Uptime Ping</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             BOX 2: AI INFERENCE CORE (TOP CENTER)
+             ========================================== -->
+        <div class="box box-ai">
+            <span class="box-badge">AI Inference Core</span>
+
+            <div style="display: grid; grid-template-columns: 1.4fr 1.1fr; gap: 18px; height: 100%; align-items: center;">
+                <!-- 3 Engine Models Column -->
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- XGBoost Card -->
+                    <div class="card-node" style="border-left: 3px solid #ea580c;">
+                        <div class="node-header">
+                            <div class="node-icon-wrap" style="background: #ffedd5; color: #ea580c;">
+                                <i data-lucide="git-branch" style="width: 18px; height: 18px;"></i>
+                            </div>
+                            <div>
+                                <div class="node-title">Supervised XGBoost Trees</div>
+                                <div class="node-desc">120 trees, Log-Loss, 99.4% ROC-AUC on PaySim</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Isolation Forest Card -->
+                    <div class="card-node" style="border-left: 3px solid #2563eb;">
+                        <div class="node-header">
+                            <div class="node-icon-wrap" style="background: #dbeafe; color: #2563eb;">
+                                <i data-lucide="radar" style="width: 18px; height: 18px;"></i>
+                            </div>
+                            <div>
+                                <div class="node-title">Unsupervised Isolation Forest</div>
+                                <div class="node-desc">100 estimators, 1.5% contamination (Zero-Day Mules)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Explainable AI (XAI) Card -->
+                    <div class="card-node" style="border-left: 3px solid #059669;">
+                        <div class="node-header">
+                            <div class="node-icon-wrap" style="background: #d1fae5; color: #059669;">
+                                <i data-lucide="bar-chart-2" style="width: 18px; height: 18px;"></i>
+                            </div>
+                            <div>
+                                <div class="node-title">Explainable AI (XAI) Attribution</div>
+                                <div class="node-desc">Balance depletion tracking & feature importance</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tri-Engine Risk Fusion Output -->
+                <div class="card-node" style="background: #ffffff; border: 2px dashed #f59e0b; padding: 22px 18px; text-align: center;">
+                    <div style="width: 48px; height: 48px; background: #fef3c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: #b45309;">
+                        <i data-lucide="merge" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <div class="node-title" style="font-size: 0.95rem; margin-bottom: 6px;">Tri-Engine Hybrid Risk Fusion</div>
+                    <div class="node-desc" style="font-size: 0.76rem; line-height: 1.5; color: #475569;">
+                        Composite Risk Scoring:<br>
+                        <strong>60% XGBoost Probability</strong> +<br>
+                        <strong>40% FATF Rule Bounds</strong> +<br>
+                        <strong>Isolation Outlier Distance</strong>
+                    </div>
+                    <div style="margin-top: 10px; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 4px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; color: #065f46;">
+                        Latency: &lt; 3.8 ms / tx
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             BOX 3: DATABASE & LEDGER (TOP RIGHT)
+             ========================================== -->
+        <div class="box box-db">
+            <span class="box-badge">Database & Ledger</span>
+
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; padding: 10px;">
+                <div style="width: 60px; height: 60px; background: #f3e8ff; border: 2px solid #d8b4fe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; color: #7e22ce;">
+                    <i data-lucide="database" style="width: 30px; height: 30px;"></i>
+                </div>
+                <div class="node-title" style="font-size: 1.05rem; margin-bottom: 6px;">SQLite & SQLAlchemy</div>
+                <div class="node-desc" style="font-size: 0.78rem; max-width: 260px; line-height: 1.5; margin-bottom: 14px;">
+                    ACID-compliant relational ledger with connection pooling & transaction isolation.
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 240px; text-align: left;">
+                    <div style="background: #ffffff; border: 1px solid #e9d5ff; padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; color: #6b21a8; display: flex; align-items: center; gap: 6px;">
+                        <i data-lucide="users" style="width: 12px; height: 12px;"></i> User Profiles & Roles
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e9d5ff; padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; color: #6b21a8; display: flex; align-items: center; gap: 6px;">
+                        <i data-lucide="table" style="width: 12px; height: 12px;"></i> 40,000+ Transactions
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e9d5ff; padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; color: #6b21a8; display: flex; align-items: center; gap: 6px;">
+                        <i data-lucide="shield" style="width: 12px; height: 12px;"></i> Immutable Audit Trail & SAR
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             BOX 4: USER & FRONTEND (BOTTOM LEFT)
+             ========================================== -->
+        <div class="box-user-flow">
+            <!-- Officer User -->
+            <div style="text-align: center; width: 100px;">
+                <div style="width: 52px; height: 52px; background: #0f172a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: #ffffff;">
+                    <i data-lucide="user-check" style="width: 28px; height: 28px;"></i>
+                </div>
+                <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a;">Compliance Officer</div>
+                <div style="font-size: 0.68rem; color: #64748b;">Risk Analyst</div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <span style="font-size: 0.68rem; font-weight: 700; color: #64748b; margin-bottom: 4px;">Sign In / Sign Up</span>
+                <i data-lucide="arrow-right" style="width: 20px; height: 20px; color: #94a3b8;"></i>
+                <span style="font-size: 0.64rem; font-weight: 700; color: #0284c7; margin-top: 2px;">Bcrypt + JWT</span>
+            </div>
+
+            <!-- ApexGuard Web App Card -->
+            <div class="card-node" style="width: 180px; text-align: center; border: 2px solid #0f172a; padding: 18px 12px;">
+                <div style="width: 44px; height: 44px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: #0f172a;">
+                    <i data-lucide="shield-alert" style="width: 24px; height: 24px;"></i>
+                </div>
+                <div class="node-title" style="font-size: 0.95rem;">ApexGuard UI</div>
+                <div class="node-desc" style="font-size: 0.72rem; margin-top: 4px;">HTML5 • Vanilla CSS • Chart.js • Lucide Icons</div>
+                <div style="margin-top: 8px; font-size: 0.65rem; background: #0f172a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700;">
+                    Vercel Edge & Render
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             BOX 5: FASTAPI BACKEND SERVER (BOTTOM CENTER)
+             ========================================== -->
+        <div class="box-backend">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 42px; height: 42px; background: #7e22ce; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #ffffff;">
+                        <i data-lucide="cpu" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.15rem; font-weight: 800; color: #581c87;">FastAPI Central Server</h3>
+                        <span style="font-size: 0.74rem; color: #7e22ce; font-weight: 600;">High-Performance Asynchronous Python 3.11 ASGI Engine</span>
+                    </div>
+                </div>
+                <span class="flow-pill" style="border-color: #a855f7; color: #6b21a8;">HTTP / REST Endpoints</span>
+            </div>
+
+            <!-- Server Capabilities Grid -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0;">
+                <div style="background: #ffffff; border: 1px solid #f3e8ff; border-radius: 8px; padding: 10px; text-align: center;">
+                    <div style="font-weight: 800; font-size: 0.78rem; color: #581c87;">/api/predict</div>
+                    <div style="font-size: 0.68rem; color: #64748b; margin-top: 2px;">Real-time inference & scoring</div>
+                </div>
+                <div style="background: #ffffff; border: 1px solid #f3e8ff; border-radius: 8px; padding: 10px; text-align: center;">
+                    <div style="font-weight: 800; font-size: 0.78rem; color: #581c87;">/api/transactions</div>
+                    <div style="font-size: 0.68rem; color: #64748b; margin-top: 2px;">Historical ledger query & audit</div>
+                </div>
+                <div style="background: #ffffff; border: 1px solid #f3e8ff; border-radius: 8px; padding: 10px; text-align: center;">
+                    <div style="font-weight: 800; font-size: 0.78rem; color: #581c87;">/api/auth/*</div>
+                    <div style="font-size: 0.68rem; color: #64748b; margin-top: 2px;">Register, Login, JWT session</div>
+                </div>
+                <div style="background: #ffffff; border: 1px solid #f3e8ff; border-radius: 8px; padding: 10px; text-align: center;">
+                    <div style="font-weight: 800; font-size: 0.78rem; color: #581c87;">/health</div>
+                    <div style="font-size: 0.68rem; color: #64748b; margin-top: 2px;">UptimeRobot keep-alive node</div>
+                </div>
+            </div>
+
+            <!-- Bottom Note in Backend -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f3e8ff; padding-top: 10px; font-size: 0.74rem; color: #6b21a8;">
+                <span><strong>Security:</strong> CORS Strict Origin Regex • Rate Limiting • Bcrypt Hashing</span>
+                <span><strong>Execution:</strong> Uvicorn Multi-Worker Async Loop</span>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             BOX 6: COMPLIANCE & AUDIT (BOTTOM RIGHT)
+             ========================================== -->
+        <div class="box box-compliance">
+            <span class="box-badge">Regulatory Compliance & Audit</span>
+
+            <div style="display: flex; flex-direction: column; justify-content: space-around; height: 100%;">
+                <!-- SAR Card -->
+                <div class="card-node" style="border-left: 3px solid #16a34a;">
+                    <div class="node-header">
+                        <div class="node-icon-wrap" style="background: #dcfce7; color: #16a34a;">
+                            <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+                        </div>
+                        <div>
+                            <div class="node-title">Automated Form SAR-01</div>
+                            <div class="node-desc">FinCEN & FATF Suspicious Activity Reports (JSON / PDF)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FATF Rule Matrix Card -->
+                <div class="card-node" style="border-left: 3px solid #0d9488;">
+                    <div class="node-header">
+                        <div class="node-icon-wrap" style="background: #ccfbf1; color: #0d9488;">
+                            <i data-lucide="scale" style="width: 18px; height: 18px;"></i>
+                        </div>
+                        <div>
+                            <div class="node-title">FATF 40 Rule Matrix</div>
+                            <div class="node-desc">Travel Rule R.16 • Anti-Structuring BSA $10k • Drainage R.10</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Audit Status -->
+                <div style="background: #ffffff; border: 1px solid #bbf7d0; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 700; color: #15803d;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e;"></span>
+                        Rule Sentinel: 100% Active
+                    </div>
+                    <span style="font-size: 0.68rem; color: #64748b;">Statutory FinCEN Alignment</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) window.lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
