@@ -1,213 +1,243 @@
-# ApexGuard — Autonomous Transaction Anomaly & AML Intelligence Platform
-
-**Enterprise-grade financial fraud surveillance, transaction anomaly detection, and anti–money laundering (AML) compliance platform.** Real-time ML inference (XGBoost + Isolation Forest + FATF Rule Matrices), explainable AI, modern monochrome white theme, and dedicated authentication workflow.
+# 🛡️ ApexGuard — Autonomous Transaction Anomaly & AML Defense Platform
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
+[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.3+-F7931E.svg?logo=scikit-learn)](https://scikit-learn.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-1.7+-EB4034.svg)](https://xgboost.ai/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Production Deployed](https://img.shields.io/badge/Production-Live%20on%20Render-brightgreen)](https://apexguard-api.onrender.com)
+
+**Enterprise-grade real-time financial transaction anomaly detection, anti–money laundering (AML) surveillance, and regulatory compliance platform.** Combines supervised gradient boosting, unsupervised anomaly isolation, deterministic FATF sentinel matrices, and Explainable AI (SHAP) into an integrated Tri-Engine decision system.
 
 ---
 
-## What Is This Project?
-
-Transaction Anomaly Detection is a **production-ready fraud detection system** that combines:
-
-- **Rule-based AML** (large transactions, structuring, layering, high-risk entities)
-- **Classical ML** (XGBoost, LightGBM, Random Forest, Isolation Forest)
-- **Deep learning** (Autoencoder, LSTM Autoencoder, Transformer)
-- **Network analysis** (cycles, fan-in/fan-out, community detection)
-- **Explainability** (SHAP, audit logs) and **BI/Reporting** (Power BI, Looker, Streamlit)
-
-It is built for **PaySim-style transaction data**, runs locally or in the cloud (Azure, Docker, Kubernetes), and exposes a **REST API** for real-time scoring.
+### 🌐 Live Production Deployment
+* **Live Web App**: [https://apexguard-api.onrender.com](https://apexguard-api.onrender.com)
+* **Status**: 100% Uptime (Monitored via UptimeRobot keep-alive on `/health`)
+* **Default Analyst Credentials**: `analyst` / `Analyst@123`
+* **Default Admin Credentials**: `admin` / `Admin@123`
 
 ---
 
-## Performance at a Glance
-
-| Component        | AUC    | Precision | Recall | Flag Rate |
-|-----------------|--------|-----------|--------|-----------|
-| **ML-based**    | 0.9939 | 1.0       | 0.96   | 0.66%     |
-| **Rule-based**  | 0.8859 | 0.16      | 0.78   | 2.29%     |
-| **Combined**    | 0.9980 | 0.037     | 0.97   | 18.86%    |
-
-- **Combined system:** AUC 0.9980, Average Precision 0.8240  
-- **Multi-model ensemble:** XGBoost, LightGBM, Random Forest, Isolation Forest, Autoencoder, LSTM Autoencoder, Transformer  
-- **Fully configurable:** 60+ parameters in `config/config.yaml`, no hardcoded business logic  
+### 🎓 Academic & Research Profile
+* **Project Lead / Researcher**: **Zaheer Ahmed** (Roll No: **22SW077**)
+* **Degree**: Bachelor of Engineering in Software Engineering (Batch 22SW)
+* **Institution**: Mehran University of Engineering and Technology (MUET), Jamshoro
+* **Year**: 2026
 
 ---
 
-## Features
+## 📌 Executive Overview & Core Innovation
 
-- **Real-time fraud detection API** (FastAPI) with `/predict`, `/health`, `/metrics`
-- **Rule-based AML scenarios** — large transactions, structuring (smurfing), rapid movement (layering), high-risk entities
-- **ML ensemble** — XGBoost, LightGBM, Random Forest, Isolation Forest + **Autoencoder, LSTM Autoencoder, Transformer**
-- **Network analysis** — transaction graphs, cycle detection, Louvain communities, centrality
-- **Feature store** — online/offline features, versioning, configurable windows
-- **Explainability & compliance** — SHAP, per-prediction explanations, audit logging, EU AI Act–oriented
-- **BI & reporting** — Parquet/CSV/Excel export, Streamlit dashboard, daily/weekly/monthly reports
-- **LLM & RAG** (optional) — GPT-4 risk explanations, ChromaDB-based pattern search
-- **DevOps** — Docker, Kubernetes, Terraform, Prometheus/Grafana, Azure-friendly
+Traditional banking Anti-Money Laundering (AML) systems suffer from a **95% to 98% false positive rate**, flooding analysts with benign noise. Conversely, pure black-box machine learning models are legally prohibited from autonomous deployment by international central banks because they cannot provide auditable explanations for seized funds or denied transactions.
+
+**ApexGuard** resolves both limitations through a **Tri-Engine Composite Decision Matrix**:
+
+```
+[ Incoming Transaction Payload ]
+               │
+               ▼
+   [ Fast Ingestion & Validation ] (FastAPI / Pydantic)
+               │
+               ▼
+  [ 16-Dimensional Feature Vector ]
+               │
+      ┌────────┼────────┐
+      ▼        ▼        ▼
+[ Engine 1 ] [ Engine 2 ] [ Engine 3 ]
+  XGBoost     Isolation    FATF Rule
+ Supervised    Forest      Sentinel
+ Score (60%)  Score (10%) Score (30%)
+      └────────┼────────┘
+               │
+               ▼
+[ Composite Risk Fusion Engine ]
+Score = (0.60 * S_ML) + (0.30 * S_RULE) + (0.10 * S_ISO)
+               │
+               ▼
+[ Multi-Tier Risk Triage & Actions ]
+├── NORMAL   (< 0.20): Auto-cleared for real-time settlement
+├── LOW      (0.20 - 0.39): Cleared with passive logging
+├── MEDIUM   (0.40 - 0.69): Queued for analyst manual triage
+└── CRITICAL (>= 0.70 or ML >= 0.80): Outbound hold + Form SAR-01 draft
+```
 
 ---
 
-## Quick Start
+## 📊 Empirical Benchmarks (50,000 Transactions)
 
-### Prerequisites
+Evaluated on a 50,000-transaction financial stream with realistic class imbalance:
 
-- Python 3.10+
-- Docker & Docker Compose (optional)
-- Azure CLI (optional, for cloud deploy)
+| Evaluation Metric | Legacy Rule Engine Alone | Supervised XGBoost Alone | Unsupervised Isolation Forest Alone | ApexGuard Hybrid Tri-Engine |
+| :--- | :---: | :---: | :---: | :---: |
+| **Accuracy** | 99.14% | 99.99% | 94.75% | **94.93%** |
+| **Precision** | 16.02% | **100.00%** | 0.16% | **3.69%** (triage filter) |
+| **Recall (Sensitivity)** | 78.00% | 96.00% | 4.00% | **97.00% (Highest Interception)** |
+| **ROC-AUC Score** | 0.8859 | 0.9939 | 0.5012 | **0.9980 (Near-Perfect Curve)** |
+| **True Positives (TP)** | 78 / 100 | 96 / 100 | 4 / 100 | **97 / 100 (Only 3 missed!)** |
+| **False Negatives (FN)** | 22 missed | 4 missed | 96 missed | **Only 3 missed!** |
+| **Inference Latency** | **< 1.0 ms** | **~2.2 ms** | **~1.5 ms** | **3.8 ms (Inline Real-Time)** |
 
-### Quick Start (Single Command)
+> **Why 97% Recall Matters**: In Anti-Money Laundering compliance, missing an illicit transfer (False Negative) triggers regulatory fines and criminal facilitation. ApexGuard deliberately prioritizes high recall while managing borderline cases through the automated Analyst Review Queue.
+
+---
+
+## 🏛️ Regulatory Compliance: The FATF Rule Matrix
+
+ApexGuard enforces statutory sentinel checks aligned with the **Financial Action Task Force (FATF 40 Recommendations)** and the **US Bank Secrecy Act (BSA)**:
+
+1. **FATF Recommendation 16 (Wire Transfer Rule / Travel Rule)**:
+   - Enforces mandatory verification and threshold reporting for large transactions $\ge \$200,000$ (or adaptive IQR outliers).
+2. **BSA 31 U.S.C. 5324 & FATF Rec. 20 (Structuring / Smurfing)**:
+   - Detects deliberate evasion of the $\$10,000$ Currency Transaction Report (CTR) threshold by intercepting transfers between $\$9,000$ and $\$9,999$.
+3. **FATF Recommendation 10 (Customer Due Diligence & Rapid Drain)**:
+   - Intercepts sudden account emptying where an account with balance $> \$1,000$ is drained to $\$0.00$ on an outbound transfer/cash-out.
+4. **Ghost Account Sentinel (Destination Balance Anomaly)**:
+   - Identifies synthetic destination accounts where funds are transferred to non-updating dummy balances.
+5. **Automated Form SAR-01 Generator**:
+   - Compiles cryptographic SHA-256 verified Suspicious Activity Reports (SAR) ready for submission to Financial Intelligence Units (FIU).
+
+---
+
+## 💡 Explainable AI (XAI) & Interpretability
+
+Compliant with the **EU AI Act (Article 13 - Transparency)** and the **US Fair Credit Reporting Act**:
+* **TreeSHAP Attributions**: Decomposes model predictions into exact feature-level marginal contributions ($\phi_j$).
+* **Dominant Feature**: `orig_diff` accounts for **95.13%** of fraud attribution (fraudsters consistently drain full sender balances).
+* **Plain-English Explanations**: Converts complex mathematical attributions into human-readable justifications for bank fraud analysts.
+
+---
+
+## 🖥️ Platform Modules & UI Console
+
+The web console provides 5 integrated surveillance modules:
+
+1. **System Overview & Live Telemetry (Tab 1)**:
+   - Real-time KPIs, transaction volume, prevented fraud losses, risk tier distributions, and Chart.js radar/bar analytics.
+2. **Real-Time Live Transaction Scanner (Tab 2)**:
+   - Single-transaction testing console with 1-click presets for **Normal Retail Payment** and **Fraudulent Smurfing/Drainage**. Real-time execution in $< 4\text{ms}$.
+3. **Batch CSV Transaction Auditor (Tab 3)**:
+   - High-throughput CSV ingestion and scoring for auditing thousands of historical transaction records.
+4. **Case Investigation & Triage Hub (Tab 4)**:
+   - Analyst workflow for reviewing flagged cases, updating investigation statuses (`CONFIRMED_FRAUD`, `CLEARED_NORMAL`), and recording notes.
+5. **FATF Regulatory Compliance Hub (Tab 5)**:
+   - Interactive rule threshold tuning, sentinel statistics, and one-click **Form SAR-01 generation and export (JSON/Print)**.
+
+---
+
+## 🚀 Quick Start Guide
+
+### 1. Local Setup
 
 ```bash
-# 1. Install dependencies
+# Clone the repository
+git clone https://github.com/zaheer-ahmed77/ApexGuard-Smart-Transaction-Anomaly-Detection.git
+cd ApexGuard-Smart-Transaction-Anomaly-Detection
+
+# Create and activate virtual environment
+python -m venv venv
+# On Windows:
+.\venv\Scripts\activate
+# On Linux/macOS:
+source venv/bin/activate
+
+# Install streamlined dependencies
 pip install -r requirements.txt
 
-# 2. Run the platform
+# Launch the platform
 python run_app.py
 ```
 
-### Application URLs & Credentials:
-- **Landing Page**: [http://localhost:8000/](http://localhost:8000/)
-- **Dedicated Login**: [http://localhost:8000/login](http://localhost:8000/login)
-- **Surveillance Console**: [http://localhost:8000/app](http://localhost:8000/app)
-- **Interactive Swagger Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **Google Colab Notebook**: `notebooks/Smart_Transaction_Anomaly_Detection_Colab.ipynb`
+Open your browser at **`http://localhost:8000/`**.
 
-#### Default Credentials:
-- **Chief Compliance Officer (Admin)**: `admin` / `Admin@123`
-- **Lead AML Analyst**: `analyst` / `Analyst@123`
-
-### Standalone Docker Deployment:
+### 2. Docker Deployment
 
 ```bash
+# Build and run standalone container
 docker-compose -f docker-compose.standalone.yml up --build -d
 ```
 
 ---
 
-## Project Structure (Overview)
+## 🔌 API Reference
+
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/` | Enterprise Landing Page | No |
+| `GET` | `/login` | Dedicated Authentication & Registration Portal | No |
+| `GET` | `/app` | Main Surveillance Console | Optional (Guest mode supported) |
+| `GET` | `/health` | Health Check probe (UptimeRobot / Kubernetes) | No |
+| `GET` | `/ready` | Readiness probe | No |
+| `POST` | `/api/auth/register` | Register new analyst/compliance account | No |
+| `POST` | `/api/auth/login` | Authenticate and obtain JWT Bearer token | No |
+| `POST` | `/api/predict` | Real-time composite transaction scoring | Optional |
+| `POST` | `/api/predict/batch` | High-throughput batch CSV upload & scoring | Optional |
+| `GET` | `/api/transactions` | Paginated, filterable transaction audit ledger | Optional |
+| `GET` | `/api/transactions/{id}` | Detailed transaction report & audit history | Optional |
+| `PATCH`| `/api/transactions/{id}` | Update review status and investigation notes | Optional |
+| `GET` | `/api/analytics/summary` | Real-time KPI counters & Chart.js telemetry | Optional |
+| `GET` | `/api/model/info` | Trained model weights, metadata & feature rankings | Optional |
+
+---
+
+## 📂 Project Repository Structure
 
 ```
-Transaction-Anomaly-Detection/
-├── config/config.yaml       # Main config (60+ parameters)
+ApexGuard-Smart-Transaction-Anomaly-Detection/
+├── config/
+│   └── config.yaml               # System parameters & threshold configurations
 ├── src/
-│   ├── api/main.py          # FastAPI app
-│   ├── compliance/          # Explainability, audit
-│   ├── data/                # Preprocessing
-│   ├── mlops/               # Model monitoring, drift
-│   ├── services/            # Feature store, BI export, LLM, RAG, reporting, merchants
-│   ├── utils/               # Helpers, config loader
-│   ├── visualization/       # Plots
-│   └── main.py              # Pipeline orchestration
-├── dashboards/              # Streamlit dashboard
-├── databricks/notebooks/    # Ingestion, features, training
-├── dbt/                     # Data models (staging, marts)
-├── scripts/                 # Download data, reports, BI export
-├── tests/                   # Pytest
-├── k8s/                     # Kubernetes manifests
-├── terraform/               # IaC
-└── monitoring/              # Prometheus, Grafana
+│   ├── api/
+│   │   └── main.py               # Production FastAPI ASGI backend & REST routes
+│   ├── compliance/
+│   │   └── explainability.py     # SHAP tree explainer & audit frameworks
+│   ├── data/
+│   │   └── preprocessor.py       # 16-feature transformation, scaling & outlier capping
+│   ├── database/
+│   │   ├── auth.py               # bcrypt password hashing & JWT token management
+│   │   ├── db.py                 # SQLAlchemy engine & session factory
+│   │   ├── models.py             # User, TransactionRecord, and AuditLog schema
+│   │   └── seed.py               # Default accounts & demo transaction seeding
+│   ├── models/
+│   │   ├── ml_anomaly_detection.py # XGBoost, Random Forest & Isolation Forest
+│   │   ├── network_analysis.py   # Flow analysis & smurfing hub detection
+│   │   └── rule_based_scenarios.py # FATF Sentinel engine & adaptive thresholds
+│   └── services/
+│       └── inference_service.py  # Tri-Engine composite scoring & override orchestrator
+├── static/
+│   ├── landing.html              # Enterprise landing portal
+│   ├── login.html                # Sign In / Create Account tabbed portal
+│   ├── app.html                  # Surveillance console with FATF Compliance Hub
+│   ├── css/                      # Modern micro-dot canvas styling
+│   └── js/app.js                 # Dynamic UI logic, live charts & SAR exporter
+├── models/
+│   ├── xgboost_fraud_model.joblib # Serialized XGBoost model
+│   ├── random_forest_fraud_model.joblib # Serialized Random Forest model
+│   ├── isolation_forest_model.joblib # Serialized Isolation Forest model
+│   └── model_metadata.json       # Feature names, importances & metrics
+├── notebooks/
+│   └── Smart_Transaction_Anomaly_Detection_Colab.ipynb # Training notebook
+├── APEXGUARD_PRESENTATION_SLIDES.md # Official 16-slide academic presentation deck
+├── PROJECT_DEFENSE_MASTER_DOSSIER.md # Comprehensive 25+ question viva defense guide
+├── DEPLOYMENT_GUIDE.md           # Step-by-step Render & Vercel deployment manual
+├── apexguard_methodology_diagram.jpg # High-definition system architecture diagram
+├── requirements.txt              # Cloud-optimized minimal dependencies
+├── render.yaml                   # Render PaaS automated deployment manifest
+└── vercel.json                   # Vercel edge reverse-proxy configuration
 ```
 
 ---
 
-## Dataset (PaySim)
+## 📖 Presentation & Examination Documents
 
-Uses **PaySim-style** fields: `step`, `type`, `amount`, `nameOrig`, `oldbalanceOrg`, `newbalanceOrig`, `nameDest`, `oldbalanceDest`, `newbalanceDest`, `isFraud`. Compatible with [PaySim (Kaggle)](https://www.kaggle.com/datasets/ealaxi/paysim1). If the dataset is unavailable, the project can generate synthetic data for testing.
-
----
-
-## API Usage
-
-```bash
-# Start API
-uvicorn src.api.main:app --host 0.0.0.0 --port 8000
-```
-
-- **GET /** — API info  
-- **GET /health** — Health check  
-- **POST /predict** — Real-time fraud score  
-- **GET /docs** — Swagger UI  
-- **GET /metrics** — Prometheus metrics  
-
-Example:
-
-```bash
-curl -X POST "http://localhost:8000/predict" \
-  -H "Content-Type: application/json" \
-  -d '{"step":1,"type":"TRANSFER","amount":5000.0,"nameOrig":"C123456789","oldbalanceOrg":10000.0,"newbalanceOrig":5000.0,"nameDest":"M987654321","oldbalanceDest":0.0,"newbalanceDest":5000.0}'
-```
+For academic evaluation and defense preparation, refer to the following comprehensive documents:
+* **[PROJECT_DEFENSE_MASTER_DOSSIER.md](PROJECT_DEFENSE_MASTER_DOSSIER.md)**: 25+ in-depth technical questions and answers covering ML mathematical proofs, class imbalance handling, feature importance, and architecture.
+* **[APEXGUARD_PRESENTATION_SLIDES.md](APEXGUARD_PRESENTATION_SLIDES.md)**: The exact 16-slide presentation deck designed for PowerPoint.
+* **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**: Deployment steps for Render, Vercel, and UptimeRobot keep-alive monitoring.
 
 ---
 
-## Configuration
+## ⚖️ License & Intellectual Property
 
-All behavior is driven by **`config/config.yaml`**: rule thresholds, ML hyperparameters, risk weights, API settings, monitoring, LLM/RAG toggles, merchant onboarding, etc. No hardcoded business logic. See `config/config.yaml` and `VERIFICATION_CHECKLIST.md` for details.
-
----
-
-## Technology Stack
-
-- **ML/DL:** scikit-learn, XGBoost, LightGBM, TensorFlow/Keras, PyTorch, SHAP  
-- **NLP/LLM:** OpenAI GPT-4, Sentence Transformers, ChromaDB  
-- **Data:** Pandas, NumPy, NetworkX, PySpark (Databricks), dbt  
-- **API:** FastAPI, Uvicorn, Pydantic  
-- **BI/Dashboards:** Streamlit, Parquet/CSV/Excel export  
-- **Infra:** Docker, Kubernetes, Terraform, Azure, Prometheus, Grafana  
-
----
-
-## Documentation
-
-| Resource              | Path |
-|-----------------------|------|
-| Config reference      | `config/config.yaml` |
-| Config checklist      | `VERIFICATION_CHECKLIST.md` |
-| API                   | `src/api/main.py` |
-| Data analyst role     | `docs/DATA_ANALYST_ROLE.md` |
-| Self-service & BI     | `docs/SELF_SERVICE_GUIDE.md`, `docs/DASHBOARD_GUIDE.md` |
-| Feature store         | `docs/FEATURE_STORE_GUIDE.md` |
-| dbt                   | `dbt/README.md` |
-| Terraform             | `terraform/README.md` |
-
----
-
-## Testing
-
-```bash
-pytest tests/
-pytest tests/test_config_integration.py -v
-pytest --cov=src tests/
-```
-
----
-
-## Security & Compliance
-
-- **GDPR-oriented** — PII masking, data protection  
-- **Explainability** — SHAP, audit trails (EU AI Act–friendly)  
-- **AML** — Rule-based scenarios, configurable thresholds, reporting hooks  
-
----
-
-## License
-
-MIT License.
-
----
-
----
-
-## Platform & Production Support
-
-- **Status:** Enterprise Production Ready
-- **Architecture:** Fast real-time inference (FastAPI + XGBoost + Isolation Forest + AML Rule Engine)
-- **Deployment:** Docker, Cloud (AWS / Azure / GCP / Render), Kubernetes ready
-- **Compliance:** Explainable AI (SHAP), FATF/AML Rule Sets, Full Audit Logs
-
----
-
-*Smart Transaction Anomaly Detection — Real-time fraud detection, AML risk scoring, and behavioral anomaly analysis powered by Machine Learning.*
-
-**Version:** 3.0.0 · **Status:** Production-ready
+This project is released under the **MIT License**.  
+Developed and maintained by **Zaheer Ahmed** (Roll No: **22SW077**), Mehran University of Engineering and Technology (MUET), Jamshoro.
