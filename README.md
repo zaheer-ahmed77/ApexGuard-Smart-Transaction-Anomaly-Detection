@@ -227,6 +227,9 @@ ApexGuard-Smart-Transaction-Anomaly-Detection/
 ```
 
 
+## 📖 Deployment Guide
+* **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**: 
+Deployment steps for Render, Vercel, and UptimeRobot keep-alive monitoring.
 
 ---
 
